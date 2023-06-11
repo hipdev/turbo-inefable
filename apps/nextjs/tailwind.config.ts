@@ -5,4 +5,17 @@ import baseConfig from "@acme/tailwind-config";
 export default {
   content: ["./src/**/*.tsx"],
   presets: [baseConfig],
+  theme: {
+    extend: {
+      fontFamily: {
+        sans: ["var(--font-inter)"],
+      },
+      colors: {
+        primary: "#29ACF5",
+      },
+      borderRadius: {
+        "2sm": "4px",
+      },
+    },
+  },
 } satisfies Config;

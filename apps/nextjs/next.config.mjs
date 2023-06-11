@@ -3,6 +3,7 @@ import "./src/env.mjs";
 
 /** @type {import("next").NextConfig} */
 const config = {
+  experimental: { appDir: true },
   reactStrictMode: true,
   /** Enables hot reloading for local packages without a build step */
   transpilePackages: ["@acme/api", "@acme/auth", "@acme/db"],
