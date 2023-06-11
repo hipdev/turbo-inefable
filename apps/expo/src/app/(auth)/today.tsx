@@ -11,7 +11,6 @@ import {
 } from "react-native"
 import { TapGestureHandler } from "react-native-gesture-handler"
 import { useRouter } from "expo-router"
-import { set } from "date-fns"
 import { debounce } from "lodash"
 import { Pencil } from "lucide-react-native"
 import { Controller, useForm } from "react-hook-form"
@@ -19,11 +18,7 @@ import useSWR, { useSWRConfig } from "swr"
 
 import { useAuthStore } from "~/components/stores/auth"
 import { createDiary, getToday, updateDiary } from "~/lib/db/stories"
-import { currentMonthAndDay, successToast } from "~/lib/utils"
-
-type FormValues = {
-  title: string
-}
+import { successToast } from "~/lib/utils"
 
 export default function TodayScreen() {
   const { user } = useAuthStore()
@@ -49,13 +44,13 @@ export default function TodayScreen() {
       const res = await createDiary({
         isTitle: true,
         formData: title,
-        user_id: user.id,
+        user_id: user?.id,
       })
 
       if (res.ok) {
         successToast()
-        mutateToday()
-        mutate(["getStories", user.id])
+        await mutateToday()
+        await mutate(["getStories", user?.id])
       }
 
       if (res.error) {
@@ -74,8 +69,8 @@ export default function TodayScreen() {
 
     if (res.ok) {
       successToast({ isUpdate: true })
-      mutateToday()
-      mutate(["getStories", user.id])
+      await mutateToday()
+      await mutate(["getStories", user.id])
     }
   }, 1500)
 

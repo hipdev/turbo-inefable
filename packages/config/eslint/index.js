@@ -10,6 +10,7 @@ const config = {
   rules: {
     "@next/next/no-html-link-for-pages": "off",
     "@typescript-eslint/restrict-template-expressions": "off",
+    "@typescript-eslint/no-unsafe-assignment": "off",
     "@typescript-eslint/no-unused-vars": [
       "error",
       {
@@ -25,6 +26,6 @@ const config = {
   },
   ignorePatterns: ["**/*.config.js", "**/*.config.cjs", "packages/config/**"],
   reportUnusedDisableDirectives: true,
-};
+}
 
-module.exports = config;
+module.exports = config

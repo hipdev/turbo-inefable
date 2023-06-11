@@ -17,6 +17,6 @@ const config = {
       rootDir: ["apps/nextjs"],
     },
   },
-};
+}
 
-module.exports = config;
+module.exports = config
