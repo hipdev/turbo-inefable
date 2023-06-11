@@ -1,31 +1,51 @@
-import React from "react";
-import { SafeAreaProvider } from "react-native-safe-area-context";
-import { Stack } from "expo-router";
-import { StatusBar } from "expo-status-bar";
+import { Stack } from 'expo-router'
+import { StatusBar } from 'expo-status-bar'
+import { AppState } from 'react-native'
+import Toast from 'react-native-toast-message'
+import { SWRConfig } from 'swr'
 
-import { TRPCProvider } from "~/utils/api";
+import { AuthContextProvider } from '../components/common/auth-context'
+import { toastConfig } from '../lib/toastConfig'
 
-// This is the main layout of the app
-// It wraps your pages with the providers they need
-const RootLayout = () => {
+export default function Layout() {
   return (
-    <TRPCProvider>
-      <SafeAreaProvider>
-        {/*
-          The Stack component displays the current page.
-          It also allows you to configure your screens 
-        */}
-        <Stack
-          screenOptions={{
-            headerStyle: {
-              backgroundColor: "#f472b6",
-            },
-          }}
-        />
-        <StatusBar />
-      </SafeAreaProvider>
-    </TRPCProvider>
-  );
-};
+    <SWRConfig
+      value={{
+        provider: () => new Map(),
+        isVisible: () => {
+          return true
+        },
+        initFocus(callback) {
+          let appState = AppState.currentState
 
-export default RootLayout;
+          const onAppStateChange = (nextAppState) => {
+            /* If it's resuming from background or inactive mode to active one */
+            if (
+              appState.match(/inactive|background/) &&
+              nextAppState === 'active'
+            ) {
+              callback()
+            }
+            appState = nextAppState
+          }
+
+          // Subscribe to the app state change events
+          const subscription = AppState.addEventListener(
+            'change',
+            onAppStateChange
+          )
+
+          return () => {
+            subscription.remove()
+          }
+        },
+      }}
+    >
+      <AuthContextProvider>
+        <Stack />
+        <StatusBar style='dark' />
+        <Toast config={toastConfig} />
+      </AuthContextProvider>
+    </SWRConfig>
+  )
+}

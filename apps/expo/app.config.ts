@@ -1,4 +1,6 @@
-import type { ExpoConfig } from "@expo/config";
+import type { ExpoConfig } from "@expo/config"
+
+import "dotenv/config"
 
 const defineConfig = (): ExpoConfig => ({
   name: "expo",
@@ -31,8 +33,11 @@ const defineConfig = (): ExpoConfig => ({
     eas: {
       // projectId: "your-project-id",
     },
+    supabaseUrl: "https://wvwiljxejnwmtlrvqlcw.supabase.co",
+    supabasePublicKey:
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind2d2lsanhlam53bXRscnZxbGN3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODMwMzgxMzYsImV4cCI6MTk5ODYxNDEzNn0.Xfz3C-BnIMEgLbIVE9qPQpiHaT14H4XBGERek51MtfU",
   },
   plugins: ["./expo-plugins/with-modify-gradle.js"],
-});
+})
 
-export default defineConfig;
+export default defineConfig
