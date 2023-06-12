@@ -42,7 +42,7 @@ export default function Login() {
   const handleLogin = async ({ email }) => {
     const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/
 
-    inputRef.current.blur()
+    inputRef?.current?.blur()
 
     const redirectURL = Linking.createURL("/")
 
