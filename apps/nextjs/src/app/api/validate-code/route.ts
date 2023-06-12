@@ -2,19 +2,39 @@ import { headers } from "next/headers"
 import { NextResponse } from "next/server"
 import bcrypt from "bcrypt"
 
+import { supabaseServer } from "~/lib/supabase-server"
+
 export async function POST(request: Request) {
   const req = await request.json()
   const headersList = headers()
-  console.log(req, "res here")
+  const BearerToken = headersList.get("Authorization")
 
-  console.log(headersList, "headers list")
-  /* `const salt = await bcrypt.genSalt(5)` is generating a salt value to be used in the process of
-      hashing a password. The `genSalt()` function is provided by the `bcrypt` library and generates
-      a random salt value with a specified number of rounds. The higher the number of rounds, the
-      more secure the salt value will be. The salt value is combined with the password before
-      hashing to make it more difficult for attackers to crack the password. */
-  const salt = await bcrypt.genSalt(5)
-  const hashedPassword = await bcrypt.hash(req?.inputCode, salt)
+  if (
+    BearerToken &&
+    typeof BearerToken == "string" &&
+    typeof req.inputCode == "string"
+  ) {
+    const {
+      data: { user },
+    } = await supabaseServer.auth.getUser(BearerToken)
 
-  return NextResponse.json({ req })
+    console.log(user, "user")
+
+    if (user) {
+      const salt = await bcrypt.genSalt(5)
+      const hashedPassword = await bcrypt.hash(req?.inputCode, salt)
+
+      const insertRes = await supabaseServer
+        .from("codes")
+        .insert([{ code: hashedPassword, user_id: user.id }])
+
+      if (insertRes.error) {
+        return NextResponse.json({ req }, { status: 500 })
+      }
+
+      return NextResponse.json(true, { status: 200 })
+    }
+  }
+
+  return NextResponse.json({ req }, { status: 403 })
 }
