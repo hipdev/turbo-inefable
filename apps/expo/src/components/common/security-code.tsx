@@ -13,7 +13,11 @@ import { useAuthStore } from "../stores/auth"
 
 const CELL_COUNT = 4
 
-const SecurityCode = ({ setIsAllowed }) => {
+interface ValidateCodeResponse {
+  isValid: boolean
+}
+
+const SecurityCode = () => {
   const { session } = useAuthStore()
 
   const [enableMask, setEnableMask] = useState(true)
@@ -29,13 +33,41 @@ const SecurityCode = ({ setIsAllowed }) => {
   const toggleMask = () => setEnableMask((currentState) => !currentState)
 
   useEffect(() => {
-    if (value.length == 4) {
-      setIsAllowed(true)
-      console.log("value", "value ready")
-    }
-  }, [value])
+    const fetchCode = async (): Promise<ValidateCodeResponse> => {
+      const res: ValidateCodeResponse = await fetch(
+        "http://localhost:3000/api/validate-code",
+        {
+          method: "POST",
+          headers: {
+            "Content-type": "application/json",
+            Authorization: session?.access_token || "",
+          },
+          body: JSON.stringify({ value }),
+        },
+      ).then((res) => res.json())
 
-  const renderCell = ({ index, symbol, isFocused }) => {
+      return res
+    }
+
+    if (value.length == 4) {
+      const verifyCode = async () => {
+        const res = await fetchCode()
+        console.log(res.isValid, "res")
+      }
+
+      verifyCode() // run it, run it
+    }
+  }, [value, session?.access_token])
+
+  const renderCell = ({
+    index,
+    symbol,
+    isFocused,
+  }: {
+    index: number
+    symbol: string
+    isFocused: boolean
+  }) => {
     let textChild = null
 
     if (symbol) {
@@ -64,20 +96,6 @@ const SecurityCode = ({ setIsAllowed }) => {
     // const hashedPassword = await bcrypt.hash(inputCode, salt)
 
     console.log(inputCode, "inputCode")
-
-    try {
-      const res = await fetch("http://localhost:3000/api/validate-code", {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json",
-          Authorization: session?.access_token || "",
-        },
-        body: JSON.stringify({ inputCode }),
-      })
-      console.log(res.status, "res")
-    } catch (error) {
-      console.log(error, "error")
-    }
   }
 
   return (

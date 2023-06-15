@@ -20,27 +20,25 @@ export async function POST(request: Request) {
   if (
     BearerToken &&
     typeof BearerToken == "string" &&
-    typeof req.value == "string"
+    typeof req.inputCode == "string"
   ) {
     const {
       data: { user },
     } = await supabase.auth.getUser(BearerToken)
 
     if (user) {
-      const { data, error } = await supabase
-        .from("codes")
-        .select("*")
-        .eq("user_id", user.id)
-        .single()
+      const salt = await bcrypt.genSalt(5)
+      const hashedPassword = await bcrypt.hash(req?.inputCode, salt)
 
-      if (error) {
-        console.log(error, "error")
+      const insertRes = await supabase
+        .from("codes")
+        .insert([{ code: hashedPassword, user_id: user.id }])
+
+      if (insertRes.error) {
         return NextResponse.json({ req }, { status: 500 })
       }
 
-      const isTheSame = await bcrypt.compare(req.value, data.code)
-
-      return NextResponse.json({ isValid: isTheSame }, { status: 200 })
+      return NextResponse.json(true, { status: 200 })
     }
   }
 
