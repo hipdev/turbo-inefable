@@ -6,7 +6,7 @@ import {
   useBlurOnFulfill,
   useClearByFocusCell,
 } from "react-native-confirmation-code-field"
-import { TextInput } from "react-native-gesture-handler"
+import { useRouter } from "expo-router"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import clsx from "clsx"
 
@@ -22,6 +22,11 @@ const SecurityCode = () => {
   const { session } = useAuthStore()
 
   const [enableMask, setEnableMask] = useState(true)
+  const [invalidCode, setInvalidCode] = useState({
+    isInvalid: false,
+    attemps: 0,
+    showQuestion: false,
+  })
   const [value, setValue] = useState("")
   const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT })
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
@@ -29,7 +34,7 @@ const SecurityCode = () => {
     setValue,
   })
 
-  const [inputCode, setInputCode] = useState("")
+  const router = useRouter()
 
   const toggleMask = () => setEnableMask((currentState) => !currentState)
 
@@ -61,10 +66,17 @@ const SecurityCode = () => {
           try {
             await AsyncStorage.setItem("unlockUntil", dateString)
 
-            console.log("Date saved successfully.")
+            router.push("/")
           } catch (error) {
             console.log("Error saving date:", error)
           }
+          setInvalidCode({ isInvalid: false, attemps: 0, showQuestion: false })
+        } else {
+          setInvalidCode({
+            isInvalid: true,
+            attemps: invalidCode.attemps + 1,
+            showQuestion: invalidCode.attemps == 3,
+          })
         }
       }
 
@@ -107,25 +119,10 @@ const SecurityCode = () => {
   const handleCode = async () => {
     // const salt = await bcrypt.genSalt(5)
     // const hashedPassword = await bcrypt.hash(inputCode, salt)
-
-    console.log(inputCode, "inputCode")
   }
 
   return (
     <View className="h-[80vh] flex-1 justify-center bg-white">
-      <View className="mx-3 mt-10 flex-row items-center space-x-4">
-        <TextInput
-          value={inputCode}
-          onChangeText={(text) => setInputCode(text)}
-          placeholder="securitycode"
-          className="flex-1  border text-2xl"
-          maxLength={4}
-          keyboardType="number-pad"
-        />
-        <TouchableOpacity onPress={handleCode}>
-          <Text>Create</Text>
-        </TouchableOpacity>
-      </View>
       <View className="flex-1 justify-center p-10">
         <Text className="text-center text-3xl font-bold text-black/80">
           Desbloquear{" "}
@@ -148,6 +145,18 @@ const SecurityCode = () => {
             {enableMask ? "🙈" : "🐵"}
           </Text>
         </View>
+
+        {invalidCode.isInvalid && invalidCode.attemps < 3 ? (
+          <Text className="text-center text-lg font-medium text-red-400">
+            El código es inválido
+          </Text>
+        ) : invalidCode.isInvalid && invalidCode.attemps >= 3 ? (
+          <View>
+            <Text className="text-center text-lg font-medium text-red-400">
+              Pregunta de seguridad:
+            </Text>
+          </View>
+        ) : null}
       </View>
     </View>
   )
