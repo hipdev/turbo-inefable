@@ -7,6 +7,7 @@ import {
   useClearByFocusCell,
 } from "react-native-confirmation-code-field"
 import { TextInput } from "react-native-gesture-handler"
+import AsyncStorage from "@react-native-async-storage/async-storage"
 import clsx from "clsx"
 
 import { useAuthStore } from "../stores/auth"
@@ -53,6 +54,18 @@ const SecurityCode = () => {
       const verifyCode = async () => {
         const res = await fetchCode()
         console.log(res.isValid, "res")
+        if (res.isValid) {
+          const currentDate = new Date()
+          const oneHourLater = new Date(currentDate.getTime() + 60 * 60 * 1000)
+          const dateString = oneHourLater.toISOString()
+          try {
+            await AsyncStorage.setItem("unlockUntil", dateString)
+
+            console.log("Date saved successfully.")
+          } catch (error) {
+            console.log("Error saving date:", error)
+          }
+        }
       }
 
       verifyCode() // run it, run it
