@@ -58,7 +58,6 @@ const SecurityCode = () => {
     if (value.length == 4) {
       const verifyCode = async () => {
         const res = await fetchCode()
-        console.log(res.isValid, "res")
         if (res.isValid) {
           const currentDate = new Date()
           const oneHourLater = new Date(currentDate.getTime() + 60 * 60 * 1000)

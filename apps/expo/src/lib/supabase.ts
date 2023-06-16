@@ -4,8 +4,6 @@ import { createClient } from "@supabase/supabase-js"
 
 import "react-native-url-polyfill/auto"
 
-console.log(Constants.expoConfig.extra.supabaseUrl, "supabase url ahh")
-
 const supabase = createClient(
   Constants.expoConfig.extra.supabaseUrl,
   Constants.expoConfig.extra.supabasePublicKey,

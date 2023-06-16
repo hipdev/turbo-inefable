@@ -7,6 +7,10 @@ import { SWRConfig } from "swr"
 import { AuthContextProvider } from "../components/common/auth-context"
 import { toastConfig } from "../lib/toastConfig"
 
+export const unstable_settings = {
+  initialRouteName: "index",
+}
+
 export default function Layout() {
   return (
     <SWRConfig
@@ -42,9 +46,11 @@ export default function Layout() {
       }}
     >
       <AuthContextProvider>
-        <Stack />
-        <StatusBar style="dark" />
-        <Toast config={toastConfig} />
+        <>
+          <Stack />
+          <StatusBar style="dark" />
+          <Toast config={toastConfig} />
+        </>
       </AuthContextProvider>
     </SWRConfig>
   )

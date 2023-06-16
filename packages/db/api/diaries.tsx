@@ -2,11 +2,11 @@ import { format } from "date-fns"
 
 import supabase from "../client"
 
-export async function getToday([_key, user_id]) {
+export async function getToday([_key, user_id]: [string, string]) {
   const currentDate = new Date()
   const today = format(currentDate, "yyyy-MM-dd")
 
-  let { data } = await supabase
+  const { data } = await supabase
     .from("diaries")
     .select("*")
     .eq("user_id_date", `${user_id}--${today}`)
@@ -15,8 +15,8 @@ export async function getToday([_key, user_id]) {
   return data
 }
 
-export async function getDiaries([_key, user_id]) {
-  let { data } = await supabase
+export async function getDiaries([_key, user_id]: [string, string]) {
+  const { data } = await supabase
     .from("diaries")
     .select("date, created_at, diary, id, title")
     .eq("user_id", user_id)
@@ -26,7 +26,15 @@ export async function getDiaries([_key, user_id]) {
 }
 
 // Mutations
-export async function createDiary({ isTitle, formData, user_id }) {
+export async function createDiary({
+  isTitle,
+  formData,
+  user_id,
+}: {
+  isTitle: boolean
+  formData: string
+  user_id: string
+}) {
   const currentDate = new Date()
   const today = format(currentDate, "yyyy-MM-dd")
 
@@ -54,7 +62,15 @@ export async function createDiary({ isTitle, formData, user_id }) {
   }
 }
 
-export async function updateDiary({ isTitle, formData, story_id }) {
+export async function updateDiary({
+  isTitle,
+  formData,
+  story_id,
+}: {
+  isTitle: boolean
+  formData: string
+  story_id: string
+}) {
   try {
     const { error } = await supabase
       .from("diaries")

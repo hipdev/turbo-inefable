@@ -14,7 +14,6 @@ export default function Diaries({ diaries }) {
   const [isAllowed, setIsAllowed] = useState(false)
 
   useEffect(() => {
-    console.log("useEffect")
     const fetchData = async () => {
       try {
         const unBlockDate = await AsyncStorage.getItem("unlockUntil")
@@ -23,7 +22,6 @@ export default function Diaries({ diaries }) {
           const currentDate = new Date()
           const savedDateObj = new Date(unBlockDate)
           if (currentDate < savedDateObj) {
-            console.log("okey")
             // Then no need to show the security code
             setIsAllowed(true)
           } else {

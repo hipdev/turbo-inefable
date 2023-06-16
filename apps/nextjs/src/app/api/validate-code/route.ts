@@ -34,7 +34,6 @@ export async function POST(request: Request) {
         .single()
 
       if (error) {
-        console.log(error, "error")
         return NextResponse.json({ req }, { status: 500 })
       }
 

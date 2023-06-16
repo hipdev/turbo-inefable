@@ -15,13 +15,14 @@ export default function AddName() {
     formState: { isSubmitting },
   } = useForm()
 
-  const handleName = async ({ name }: { name: string }) => {
-    const res = await updateUserName({ name, user })
+  const handleName = handleSubmit(async (data) => {
+    if (!user) return
+    const res = await updateUserName({ name: data.name, user })
 
     if (res.ok) {
       reset({ name: "" })
     }
-  }
+  })
 
   return (
     <>
@@ -54,10 +55,7 @@ export default function AddName() {
         {isSubmitting ? (
           <Progress.Circle size={28} indeterminate={true} color="#AC66CC" />
         ) : (
-          <TouchableOpacity
-            disabled={isSubmitting}
-            onPress={() => handleSubmit(handleName)()}
-          >
+          <TouchableOpacity disabled={isSubmitting} onPress={handleName}>
             <Send size={28} color="#444" />
           </TouchableOpacity>
         )}

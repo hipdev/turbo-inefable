@@ -1,24 +1,27 @@
-import { useEffect } from 'react'
-import { useURL } from 'expo-linking'
-import supabase from '../../lib/supabase'
-import { useAuthStore } from '../stores/auth'
-import { useRootNavigationState } from 'expo-router'
+import { useEffect, type ReactElement } from "react"
+import { useURL } from "expo-linking"
 
-export const AuthContextProvider = ({ children }) => {
+import supabase from "../../lib/supabase"
+import { useAuthStore } from "../stores/auth"
+
+type Props = {
+  children: ReactElement
+}
+
+export const AuthContextProvider = ({ children }: Props) => {
   const { setUser, setSession } = useAuthStore()
-  const navigationState = useRootNavigationState()
 
   const url = useURL()
 
   useEffect(() => {
     if (url) {
-      const correctUrl = url.includes('#') ? url.replace('#', '?') : url
+      const correctUrl = url.includes("#") ? url.replace("#", "?") : url
       const urlObject = new URL(correctUrl)
-      const accessToken = urlObject.searchParams.get('access_token')
-      const refreshToken = urlObject.searchParams.get('refresh_token')
+      const accessToken = urlObject.searchParams.get("access_token")
+      const refreshToken = urlObject.searchParams.get("refresh_token")
       if (!refreshToken || !accessToken) return
       // bug fix, Buffer is used in the underlying lib, but is not imported
-      global.Buffer = require('buffer').Buffer
+      global.Buffer = require("buffer").Buffer
       supabase.auth
         .setSession({
           access_token: accessToken,
@@ -27,7 +30,7 @@ export const AuthContextProvider = ({ children }) => {
         .then(({ data: { session } }) => {
           if (session) {
             // supabase.auth._notifyAllSubscribers('SIGNED_IN', session)
-            console.log('session ready')
+            console.log("session ready")
           }
         })
     }
@@ -43,7 +46,7 @@ export const AuthContextProvider = ({ children }) => {
       async (event, session) => {
         setSession(session)
         setUser(session?.user ?? null)
-      }
+      },
     )
 
     return () => {

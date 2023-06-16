@@ -30,6 +30,7 @@ export default function TodayScreen() {
     getToday,
   )
 
+  // Mutate global data
   const { mutate } = useSWRConfig()
 
   const { control, setValue } = useForm()
@@ -114,7 +115,7 @@ export default function TodayScreen() {
                     value={value}
                     defaultValue={todayData?.title || ""}
                     placeholder="Titulo...(Opcional)"
-                    className="text-primary h-9 flex-1 text-center text-xl"
+                    className="h-9 flex-1 text-center text-xl text-primary"
                     inputMode="text"
                     placeholderTextColor={"#444"}
                     autoCapitalize="sentences"
