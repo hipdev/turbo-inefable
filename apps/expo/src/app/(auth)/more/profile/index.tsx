@@ -8,7 +8,7 @@ import { Controller, useForm } from "react-hook-form"
 
 import GoBack from "~/components/common/go-back"
 import { useAuthStore } from "~/components/stores/auth"
-import { successToast } from "~/lib/utils"
+import { errorToast, successToast } from "~/lib/utils"
 
 export default function Profile() {
   const { user } = useAuthStore()
@@ -19,11 +19,13 @@ export default function Profile() {
   } = useForm()
 
   const handleName = async ({ name }: { name: string }) => {
+    console.log("ok")
     const res = await updateUserName({ name, user })
 
     if (res.ok) {
       successToast({ isUpdate: true })
     } else {
+      errorToast()
     }
   }
 
@@ -70,10 +72,6 @@ export default function Profile() {
             <Text className="text-lg text-black/70">Fecha de nacimiento</Text>
             <Controller
               control={control}
-              rules={{
-                required: true,
-                validate: (value) => value.length > 1,
-              }}
               name="birthday"
               render={({ field: { onChange, onBlur, value } }) => (
                 <TextInput
