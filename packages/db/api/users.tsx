@@ -2,6 +2,26 @@ import type { User } from "@supabase/supabase-js"
 
 import supabase from "../client"
 
+export async function getUserCode([_key, user_id]: [string, string]) {
+  try {
+    const { data, error } = await supabase
+      .from("codes")
+      .select("*")
+      .eq("user_id", user_id)
+      .single()
+
+    if (error) {
+      return { error, ok: false }
+    }
+
+    return { ok: true, data }
+  } catch (error) {
+    return { error }
+  }
+}
+
+// Mutations
+
 export async function updateUserName({
   name,
   user,
@@ -33,19 +53,18 @@ export async function updateUserName({
   }
 }
 
-export async function getUserCode([_key, user_id]: [string, string]) {
+export async function deleteUserCode({ user_id }: { user_id: string }) {
   try {
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from("codes")
-      .select("*")
+      .delete()
       .eq("user_id", user_id)
-      .single()
 
     if (error) {
       return { error, ok: false }
     }
 
-    return { ok: true, data }
+    return { ok: true }
   } catch (error) {
     return { error }
   }

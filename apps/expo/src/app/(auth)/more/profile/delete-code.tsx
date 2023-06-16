@@ -7,13 +7,16 @@ import {
 } from "react-native"
 import { TextInput } from "react-native-gesture-handler"
 import * as Progress from "react-native-progress"
+import { deleteUserCode } from "@inefable/api"
+import AsyncStorage from "@react-native-async-storage/async-storage"
 import { Trash } from "lucide-react-native"
 import { Controller, useForm } from "react-hook-form"
 
+import { type ValidateCodeResponse } from "~/components/common/security-code"
 import { useAuthStore } from "~/components/stores/auth"
 
 export default function DeleteCode() {
-  const { user } = useAuthStore()
+  const { user, session } = useAuthStore()
 
   const {
     handleSubmit,
@@ -23,6 +26,27 @@ export default function DeleteCode() {
 
   const handleName = handleSubmit(async (data) => {
     if (!user) return
+    const res: ValidateCodeResponse = await fetch(
+      "http://localhost:3000/api/validate-code",
+      {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+          Authorization: session?.access_token || "",
+        },
+        body: JSON.stringify({ value: data.code }),
+      },
+    ).then((res) => res.json())
+
+    if (res.isValid) {
+      const res = await deleteUserCode({ user_id: user.id })
+
+      if (res.ok) {
+        await AsyncStorage.removeItem("unlockUntil")
+      }
+    }
+
+    console.log(res, "res code")
     // const res = await updateUserName({ name: data.name, user })
 
     // if (res.ok) {
@@ -46,7 +70,7 @@ export default function DeleteCode() {
                   required: true,
                   validate: (value) => value.length == 4,
                 }}
-                name="name"
+                name="code"
                 render={({ field: { onChange, onBlur, value } }) => (
                   <TextInput
                     onBlur={onBlur}
@@ -67,8 +91,8 @@ export default function DeleteCode() {
             ) : (
               <TouchableOpacity disabled={isSubmitting} onPress={handleName}>
                 <View className="flex-row items-center space-x-2 rounded-md border-2 border-red-500 px-2 py-1">
-                  <Trash size={28} color="red" />
-                  <Text className="text-lg font-semibold text-red-500">
+                  <Trash size={24} color="red" />
+                  <Text className="text-lg font-medium text-red-500">
                     Eliminar
                   </Text>
                 </View>

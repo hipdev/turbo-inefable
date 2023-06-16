@@ -14,7 +14,7 @@ import { useAuthStore } from "../stores/auth"
 
 const CELL_COUNT = 4
 
-interface ValidateCodeResponse {
+export interface ValidateCodeResponse {
   isValid: boolean
 }
 
