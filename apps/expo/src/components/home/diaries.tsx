@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { Text, TouchableOpacity, View } from "react-native"
 import { useRouter } from "expo-router"
 import AsyncStorage from "@react-native-async-storage/async-storage"
-import { format, isToday, parseISO } from "date-fns"
+import { isToday, parseISO } from "date-fns"
 
 import { useAuthStore } from "../../components/stores/auth"
 import SecurityCode from "../common/security-code"
@@ -14,6 +14,7 @@ export default function Diaries({ diaries }) {
   const [isAllowed, setIsAllowed] = useState(false)
 
   useEffect(() => {
+    console.log("useEffect")
     const fetchData = async () => {
       try {
         const unBlockDate = await AsyncStorage.getItem("unlockUntil")
@@ -22,6 +23,7 @@ export default function Diaries({ diaries }) {
           const currentDate = new Date()
           const savedDateObj = new Date(unBlockDate)
           if (currentDate < savedDateObj) {
+            console.log("okey")
             // Then no need to show the security code
             setIsAllowed(true)
           } else {

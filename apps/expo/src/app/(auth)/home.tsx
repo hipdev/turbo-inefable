@@ -1,11 +1,11 @@
 import { SafeAreaView, ScrollView } from "react-native"
+import { getDiaries } from "@inefable/api"
 import useSWR from "swr"
 
 import AddName from "~/components/home/add-name"
 import Diaries from "~/components/home/diaries"
 import Welcome from "~/components/home/welcome"
 import { useAuthStore } from "~/components/stores/auth"
-import { getDiaries } from "~/lib/db/stories"
 import supabase from "~/lib/supabase"
 
 export default function HomeScreen() {

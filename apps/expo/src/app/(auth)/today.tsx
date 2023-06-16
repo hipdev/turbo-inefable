@@ -11,13 +11,13 @@ import {
 } from "react-native"
 import { TapGestureHandler } from "react-native-gesture-handler"
 import { useRouter } from "expo-router"
+import { createDiary, getToday, updateDiary } from "@inefable/api"
 import { debounce } from "lodash"
 import { Pencil } from "lucide-react-native"
 import { Controller, useForm } from "react-hook-form"
 import useSWR, { useSWRConfig } from "swr"
 
 import { useAuthStore } from "~/components/stores/auth"
-import { createDiary, getToday, updateDiary } from "~/lib/db/stories"
 import { successToast } from "~/lib/utils"
 
 export default function TodayScreen() {
@@ -36,7 +36,7 @@ export default function TodayScreen() {
 
   useEffect(() => {
     setValue("title", todayData?.title)
-  }, [todayData?.title])
+  }, [todayData?.title, setValue])
 
   const debouncedSaveTitle = debounce(async (title) => {
     // if there is no diary, we create it
@@ -70,7 +70,7 @@ export default function TodayScreen() {
     if (res.ok) {
       successToast({ isUpdate: true })
       await mutateToday()
-      await mutate(["getStories", user.id])
+      await mutate(["getStories", user?.id])
     }
   }, 1500)
 

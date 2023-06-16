@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState } from "react"
 import {
   Keyboard,
   KeyboardAvoidingView,
@@ -8,48 +8,48 @@ import {
   TextInput,
   TouchableWithoutFeedback,
   View,
-} from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import { Stack, useRouter } from "expo-router";
-import { ArrowLeftCircle, Save } from "lucide-react-native";
-import { Controller, useForm } from "react-hook-form";
-import useSWR from "swr";
+} from "react-native"
+import { TouchableOpacity } from "react-native-gesture-handler"
+import { Stack, useRouter } from "expo-router"
+import { createDiary, getToday, updateDiary } from "@inefable/api"
+import { ArrowLeftCircle, Save } from "lucide-react-native"
+import { Controller, useForm } from "react-hook-form"
+import useSWR from "swr"
 
-import { useAuthStore } from "~/components/stores/auth";
-import { createDiary, getToday, updateDiary } from "~/lib/db/stories";
-import { successToast } from "~/lib/utils";
+import { useAuthStore } from "~/components/stores/auth"
+import { successToast } from "~/lib/utils"
 
 export default function EditDiary() {
-  const [currentDate] = useState(new Date());
+  const [currentDate] = useState(new Date())
 
-  const { user } = useAuthStore();
-  const router = useRouter();
+  const { user } = useAuthStore()
+  const router = useRouter()
   const { data: todayData, mutate } = useSWR(
     user?.id ? ["getToday", user.id] : null,
     getToday,
-  );
+  )
 
   const {
     handleSubmit,
     control,
     formState: { errors, isSubmitting },
-  } = useForm();
+  } = useForm()
 
   const handleDiary = async ({ story }) => {
     if (!todayData) {
       const res = await createDiary({
         isTitle: false,
         formData: story,
-        user_id: user.id,
-      });
+        user_id: user?.id,
+      })
 
       if (res.ok) {
-        successToast();
-        mutate();
+        successToast()
+        mutate()
       }
 
       if (res.error) {
-        console.error(res.error, "error");
+        console.error(res.error, "error")
       }
     }
 
@@ -57,14 +57,14 @@ export default function EditDiary() {
     const res = await updateDiary({
       isTitle: false,
       formData: story,
-      story_id: todayData.id,
-    });
+      story_id: todayData?.id,
+    })
 
     if (res.ok) {
-      successToast({ isUpdate: true });
-      mutate();
+      successToast({ isUpdate: true })
+      mutate()
     }
-  };
+  }
 
   return (
     <>
@@ -143,5 +143,5 @@ export default function EditDiary() {
         </KeyboardAvoidingView>
       </SafeAreaView>
     </>
-  );
+  )
 }

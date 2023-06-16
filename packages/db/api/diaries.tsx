@@ -1,17 +1,15 @@
-import { format } from 'date-fns'
+import { format } from "date-fns"
 
-import supabase from '../supabase'
-
-// Queries
+import supabase from "../client"
 
 export async function getToday([_key, user_id]) {
   const currentDate = new Date()
-  const today = format(currentDate, 'yyyy-MM-dd')
+  const today = format(currentDate, "yyyy-MM-dd")
 
   let { data } = await supabase
-    .from('diaries')
-    .select('*')
-    .eq('user_id_date', `${user_id}--${today}`)
+    .from("diaries")
+    .select("*")
+    .eq("user_id_date", `${user_id}--${today}`)
     .single()
 
   return data
@@ -19,19 +17,18 @@ export async function getToday([_key, user_id]) {
 
 export async function getDiaries([_key, user_id]) {
   let { data } = await supabase
-    .from('diaries')
-    .select('date, created_at, diary, id, title')
-    .eq('user_id', user_id)
-    .order('date', { ascending: false })
+    .from("diaries")
+    .select("date, created_at, diary, id, title")
+    .eq("user_id", user_id)
+    .order("date", { ascending: false })
 
   return data
 }
 
 // Mutations
-
 export async function createDiary({ isTitle, formData, user_id }) {
   const currentDate = new Date()
-  const today = format(currentDate, 'yyyy-MM-dd')
+  const today = format(currentDate, "yyyy-MM-dd")
 
   const commonData = {
     user_id,
@@ -41,7 +38,7 @@ export async function createDiary({ isTitle, formData, user_id }) {
 
   try {
     const { error } = await supabase
-      .from('diaries')
+      .from("diaries")
       .insert([
         isTitle
           ? { ...commonData, title: formData }
@@ -60,13 +57,13 @@ export async function createDiary({ isTitle, formData, user_id }) {
 export async function updateDiary({ isTitle, formData, story_id }) {
   try {
     const { error } = await supabase
-      .from('diaries')
+      .from("diaries")
       .update([
         isTitle
           ? { updated_at: new Date(), title: formData }
           : { updated_at: new Date(), diary: formData },
       ])
-      .eq('id', story_id)
+      .eq("id", story_id)
 
     if (error) {
       return { error }

@@ -10,8 +10,7 @@
     },
     "build": {
       "dependsOn": [
-        "^build",
-        "^db:generate"
+        "^build"
       ],
       "outputs": [
         ".next/**",
@@ -27,9 +26,6 @@
       "cache": false
     },
     "type-check": {
-      "dependsOn": [
-        "^db:generate"
-      ],
       "cache": false
     }
   },
