@@ -10,12 +10,13 @@ import {
   View,
 } from "react-native"
 import { TouchableOpacity } from "react-native-gesture-handler"
-import { Stack, useRouter } from "expo-router"
+import { Stack } from "expo-router"
 import { createDiary, getToday, updateDiary } from "@inefable/api"
-import { ArrowLeftCircle, Save } from "lucide-react-native"
+import { Save } from "lucide-react-native"
 import { Controller, useForm } from "react-hook-form"
 import useSWR from "swr"
 
+import GoBack from "~/components/common/go-back"
 import { useAuthStore } from "~/components/stores/auth"
 import { successToast } from "~/lib/utils"
 
@@ -23,7 +24,7 @@ export default function EditDiary() {
   const [currentDate] = useState(new Date())
 
   const { user } = useAuthStore()
-  const router = useRouter()
+
   const { data: todayData, mutate } = useSWR(
     user?.id ? ["getToday", user.id] : null,
     getToday,
@@ -74,13 +75,7 @@ export default function EditDiary() {
             month: "long",
             day: "numeric",
           }),
-          headerLeft: () => (
-            <TouchableOpacity onPress={() => router.back()}>
-              <View style={{ marginRight: 10 }}>
-                <ArrowLeftCircle size={30} className="text-black/70" />
-              </View>
-            </TouchableOpacity>
-          ),
+          headerLeft: () => <GoBack />,
           headerRight: () => (
             <TouchableOpacity
               disabled={isSubmitting}

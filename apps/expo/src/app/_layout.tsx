@@ -1,11 +1,11 @@
-import { Stack } from 'expo-router'
-import { StatusBar } from 'expo-status-bar'
-import { AppState } from 'react-native'
-import Toast from 'react-native-toast-message'
-import { SWRConfig } from 'swr'
+import { AppState, type AppStateStatus } from "react-native"
+import Toast from "react-native-toast-message"
+import { Stack } from "expo-router"
+import { StatusBar } from "expo-status-bar"
+import { SWRConfig } from "swr"
 
-import { AuthContextProvider } from '../components/common/auth-context'
-import { toastConfig } from '../lib/toastConfig'
+import { AuthContextProvider } from "../components/common/auth-context"
+import { toastConfig } from "../lib/toastConfig"
 
 export default function Layout() {
   return (
@@ -18,11 +18,11 @@ export default function Layout() {
         initFocus(callback) {
           let appState = AppState.currentState
 
-          const onAppStateChange = (nextAppState) => {
+          const onAppStateChange = (nextAppState: AppStateStatus) => {
             /* If it's resuming from background or inactive mode to active one */
             if (
               appState.match(/inactive|background/) &&
-              nextAppState === 'active'
+              nextAppState === "active"
             ) {
               callback()
             }
@@ -31,8 +31,8 @@ export default function Layout() {
 
           // Subscribe to the app state change events
           const subscription = AppState.addEventListener(
-            'change',
-            onAppStateChange
+            "change",
+            onAppStateChange,
           )
 
           return () => {
@@ -43,7 +43,7 @@ export default function Layout() {
     >
       <AuthContextProvider>
         <Stack />
-        <StatusBar style='dark' />
+        <StatusBar style="dark" />
         <Toast config={toastConfig} />
       </AuthContextProvider>
     </SWRConfig>
