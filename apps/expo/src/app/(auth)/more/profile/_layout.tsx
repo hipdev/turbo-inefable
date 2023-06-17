@@ -23,6 +23,16 @@ export default function Layout() {
           headerShown: true,
         }}
       />
+      <Stack.Screen
+        name="create-code"
+        options={{
+          // Set the presentation mode to modal for our modal route.
+          presentation: "modal",
+          title: "Crear código",
+          headerLeft: () => <GoBack />,
+          headerShown: true,
+        }}
+      />
     </Stack>
   )
 }

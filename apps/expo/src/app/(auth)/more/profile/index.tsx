@@ -134,7 +134,10 @@ export default function Profile() {
                 verse cuando ingresas el código.
               </Text>
               <View className="mt-4 w-20 rounded-md border border-black/50">
-                <Link href="#" className="px-3 py-0.5 text-lg font-medium">
+                <Link
+                  href="more/profile/create-code"
+                  className="px-3 py-0.5 text-lg font-medium"
+                >
                   Añadir
                 </Link>
               </View>

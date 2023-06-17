@@ -21,7 +21,6 @@ export default function Diaries({ diaries }) {
   const [isAllowed, setIsAllowed] = useState(false)
 
   useEffect(() => {
-    console.log("ok")
     const fetchData = async () => {
       try {
         const unBlockDate = await AsyncStorage.getItem("unlockUntil")
@@ -49,7 +48,9 @@ export default function Diaries({ diaries }) {
 
   return (
     <View className="flex flex-row flex-wrap">
-      {!isAllowed && !codeData?.data && <SecurityCode />}
+      {!isAllowed && codeData?.data && codeData.data.length > 0 && (
+        <SecurityCode />
+      )}
       {(isAllowed || codeData?.data?.length == 0) &&
         diaries?.map((diary) => (
           <TouchableOpacity
