@@ -8,7 +8,9 @@ export async function getUserCode([_key, user_id]: [string, string]) {
       .from("codes")
       .select("*")
       .eq("user_id", user_id)
-      .single()
+      .limit(1)
+
+    console.log(data, "data code", error)
 
     if (error) {
       return { error, ok: false }

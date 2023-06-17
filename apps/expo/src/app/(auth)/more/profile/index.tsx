@@ -17,7 +17,6 @@ export default function Profile() {
   const { data: codeData } = useSWR(
     user?.id ? ["getUserCode", user.id] : null,
     getUserCode,
-    { revalidateOnFocus: true, refreshInterval: 1000 },
   )
 
   const {

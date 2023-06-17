@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react"
 import { Text, TouchableOpacity, View } from "react-native"
 import { useRouter } from "expo-router"
+import { getUserCode } from "@inefable/api"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { isToday, parseISO } from "date-fns"
+import useSWR from "swr"
 
 import { useAuthStore } from "../../components/stores/auth"
 import SecurityCode from "../common/security-code"
@@ -11,9 +13,15 @@ export default function Diaries({ diaries }) {
   const { user } = useAuthStore()
   const router = useRouter()
 
+  const { data: codeData, isLoading } = useSWR(
+    user?.id ? ["getUserCode", user.id] : null,
+    getUserCode,
+  )
+
   const [isAllowed, setIsAllowed] = useState(false)
 
   useEffect(() => {
+    console.log("ok")
     const fetchData = async () => {
       try {
         const unBlockDate = await AsyncStorage.getItem("unlockUntil")
@@ -35,12 +43,14 @@ export default function Diaries({ diaries }) {
     }
 
     fetchData()
-  }, []) // Empty dependency array ensures this effect only runs once
+  }, [codeData]) // Empty dependency array ensures this effect only runs once
+
+  if (isLoading) return <Text>Loading...</Text>
 
   return (
     <View className="flex flex-row flex-wrap">
-      {!isAllowed && <SecurityCode />}
-      {isAllowed &&
+      {!isAllowed && !codeData?.data && <SecurityCode />}
+      {(isAllowed || codeData?.data?.length == 0) &&
         diaries?.map((diary) => (
           <TouchableOpacity
             onPress={() => {

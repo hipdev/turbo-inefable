@@ -14,7 +14,6 @@ export default function HomeScreen() {
   const { data: diaries } = useSWR(
     user?.id ? ["getStories", user.id] : null,
     getDiaries,
-    { revalidateOnFocus: true, refreshInterval: 1000 },
   )
 
   const handleLogout = async () => {
