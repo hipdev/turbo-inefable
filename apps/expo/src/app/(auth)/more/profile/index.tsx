@@ -105,7 +105,7 @@ export default function Profile() {
           </View>
 
           <Text className="mb-2 mt-5 text-xl font-semibold">Seguridad</Text>
-          {codeData?.data ? (
+          {codeData?.data?.length !== 0 ? (
             <View>
               <Text className="text-base">
                 Has establecido un código de seguridad
@@ -127,7 +127,19 @@ export default function Profile() {
                 </View>
               </View>
             </View>
-          ) : null}
+          ) : (
+            <View className="flex-row items-center">
+              <Text className="w-3/4 text-lg leading-6">
+                Puedes añadir un código de 4 dígitos, las historias solo podrán
+                verse cuando ingresas el código.
+              </Text>
+              <View className="mt-4 w-20 rounded-md border border-black/50">
+                <Link href="#" className="px-3 py-0.5 text-lg font-medium">
+                  Añadir
+                </Link>
+              </View>
+            </View>
+          )}
         </View>
       </View>
     </SafeAreaView>
