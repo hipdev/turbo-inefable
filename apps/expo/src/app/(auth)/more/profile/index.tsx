@@ -1,13 +1,12 @@
 import { SafeAreaView, Text, TextInput, View } from "react-native"
 import { TouchableOpacity } from "react-native-gesture-handler"
 import * as Progress from "react-native-progress"
-import { Link, Stack } from "expo-router"
+import { Link } from "expo-router"
 import { getUserCode, updateUserName } from "@inefable/api"
 import { Save } from "lucide-react-native"
 import { Controller, useForm } from "react-hook-form"
 import useSWR from "swr"
 
-import GoBack from "~/components/common/go-back"
 import { useAuthStore } from "~/components/stores/auth"
 import { errorToast, successToast } from "~/lib/utils"
 
@@ -150,8 +149,8 @@ export default function Profile() {
             )}
           </View>
         </View>
-        <View className="pb-5">
-          <Link href="#" className="text-base">
+        <View className="pb-8">
+          <Link href="more/profile/delete-account" className="text-base">
             Eliminar cuenta ☠️
           </Link>
         </View>
