@@ -8,7 +8,7 @@ import {
 import { TextInput } from "react-native-gesture-handler"
 import * as Progress from "react-native-progress"
 import { Stack, useRouter } from "expo-router"
-import { deleteUserCode, getUserCode } from "@inefable/api"
+import { getUserCode } from "@inefable/api"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import clsx from "clsx"
 import { Trash } from "lucide-react-native"
@@ -16,7 +16,6 @@ import { Controller, useForm } from "react-hook-form"
 import useSWR, { useSWRConfig } from "swr"
 
 import GoBack from "~/components/common/go-back"
-import { type ValidateCodeResponse } from "~/components/common/security-code"
 import { useAuthStore } from "~/components/stores/auth"
 
 export default function DeleteCode() {
@@ -29,8 +28,6 @@ export default function DeleteCode() {
     getUserCode,
   )
 
-  console.log(codeData, "codeData")
-
   const {
     handleSubmit,
     control,
@@ -39,8 +36,25 @@ export default function DeleteCode() {
 
   const handleDelete = handleSubmit(async (data) => {
     if (!user) return
+
     if (codeData?.data && codeData.data.length > 0) {
       // Delete with code
+    } else {
+      // Delete with email
+      if (data.value == user.email) {
+        const res = await fetch(
+          "http://localhost:3000/api/delete-inefable-user",
+          {
+            method: "POST",
+            headers: {
+              "Content-type": "application/json",
+              Authorization: session?.access_token || "",
+            },
+          },
+        ).then((res) => res.json())
+
+        console.log(res, "res")
+      }
     }
   })
 
@@ -71,13 +85,15 @@ export default function DeleteCode() {
                 control={control}
                 rules={{
                   required: true,
-                  validate: (value) => value.length == 4,
+                  validate: (value) =>
+                    codeData?.data && codeData.data.length > 0
+                      ? value.length == 4
+                      : value == user?.email,
                 }}
                 name="value"
                 render={({ field: { onChange, onBlur, value } }) => (
                   <TextInput
                     onBlur={onBlur}
-                    y
                     onChangeText={onChange}
                     value={value}
                     placeholder={
