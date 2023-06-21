@@ -39,7 +39,7 @@ export default function Profile() {
   return (
     <SafeAreaView className="flex-1">
       <View className="mx-4 mt-7 flex flex-1 justify-between">
-        <View className="">
+        <View>
           {/* <Stack.Screen options={{ title: 'Overview', headerShown: false }} /> */}
           <Text className="mb-2 text-xl font-semibold">Info básica</Text>
 

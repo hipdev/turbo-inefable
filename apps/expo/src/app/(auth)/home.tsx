@@ -6,7 +6,6 @@ import AddName from "~/components/home/add-name"
 import Diaries from "~/components/home/diaries"
 import Welcome from "~/components/home/welcome"
 import { useAuthStore } from "~/components/stores/auth"
-import supabase from "~/lib/supabase"
 
 export default function HomeScreen() {
   const { user } = useAuthStore()
@@ -15,11 +14,6 @@ export default function HomeScreen() {
     user?.id ? ["getStories", user.id] : null,
     getDiaries,
   )
-
-  const handleLogout = async () => {
-    const { error } = await supabase.auth.signOut()
-    if (error) console.log("Error logging out:", error.message)
-  }
 
   return (
     <SafeAreaView className="flex-1">

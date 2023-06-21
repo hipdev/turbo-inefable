@@ -37,28 +37,10 @@ export default function DeleteCode() {
     formState: { isSubmitting },
   } = useForm()
 
-  const handleName = handleSubmit(async (data) => {
+  const handleDelete = handleSubmit(async (data) => {
     if (!user) return
-    const res: ValidateCodeResponse = await fetch(
-      "http://localhost:3000/api/validate-code",
-      {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json",
-          Authorization: session?.access_token || "",
-        },
-        body: JSON.stringify({ value: data.code }),
-      },
-    ).then((res) => res.json())
-
-    if (res.isValid) {
-      const res = await deleteUserCode({ user_id: user.id })
-
-      if (res.ok) {
-        await mutate(["getUserCode", user.id])
-        await AsyncStorage.removeItem("unlockUntil")
-        router.push("more/profile")
-      }
+    if (codeData?.data && codeData.data.length > 0) {
+      // Delete with code
     }
   })
 
@@ -91,10 +73,11 @@ export default function DeleteCode() {
                   required: true,
                   validate: (value) => value.length == 4,
                 }}
-                name="code"
+                name="value"
                 render={({ field: { onChange, onBlur, value } }) => (
                   <TextInput
                     onBlur={onBlur}
+                    y
                     onChangeText={onChange}
                     value={value}
                     placeholder={
@@ -121,7 +104,7 @@ export default function DeleteCode() {
             {isSubmitting ? (
               <Progress.Circle size={28} indeterminate={true} color="#AC66CC" />
             ) : (
-              <TouchableOpacity disabled={isSubmitting} onPress={handleName}>
+              <TouchableOpacity disabled={isSubmitting} onPress={handleDelete}>
                 <View className="flex-row items-center space-x-2 rounded-md border-2 border-red-500 px-2 py-1">
                   <Trash size={24} color="red" />
                   <Text className="text-lg font-medium text-red-500">
