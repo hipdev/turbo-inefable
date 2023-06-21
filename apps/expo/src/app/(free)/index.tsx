@@ -14,7 +14,7 @@ import { useAuthStore } from "../../components/stores/auth"
 import supabase from "../../lib/supabase"
 
 export default function Login() {
-  const { user, session } = useAuthStore()
+  const { user } = useAuthStore()
   const [success, setSuccess] = useState(false)
   const router = useRouter()
   const segments = useSegments()
@@ -60,15 +60,8 @@ export default function Login() {
     }
   }
 
-  const handleLogout = async () => {
-    const { error } = await supabase.auth.signOut()
-    if (error) console.log("Error logging out:", error.message)
-  }
-
   return (
     <SafeAreaView className="flex-1 items-center justify-center">
-      {/* <Link href='/diary'>Go to Details</Link> */}
-
       <View className="items-center">
         <Text className="mb-14 text-4xl font-black">Inefable</Text>
 
@@ -107,9 +100,9 @@ export default function Login() {
         <View className="mt-4 flex-row space-x-2">
           <TouchableOpacity
             onPress={() => handleSubmit(handleLogin)()}
-            className="bg-primary flex-row items-center space-x-2 rounded-md px-3 py-2"
+            className="flex-row items-center space-x-2 rounded-md bg-primary px-3 py-2"
           >
-            <Text className="text-lg text-black">Obtener link</Text>
+            <Text className="text-lg text-white">Obtener link</Text>
           </TouchableOpacity>
         </View>
       </View>

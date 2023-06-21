@@ -22,6 +22,26 @@ export async function getUserCode([_key, user_id]: [string, string]) {
   }
 }
 
+export async function getUserProfile([_key, user_id]: [string, string]) {
+  try {
+    const { data, error } = await supabase
+      .from("profiles")
+      .select("*")
+      .eq("user_id", user_id)
+      .single()
+
+    console.log(data, "data user profile", error)
+
+    if (error) {
+      return { error, ok: false }
+    }
+
+    return { ok: true, data }
+  } catch (error) {
+    return { error }
+  }
+}
+
 // Mutations
 
 export async function updateUserName({

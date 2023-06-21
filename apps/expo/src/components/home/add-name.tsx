@@ -3,15 +3,17 @@ import * as Progress from "react-native-progress"
 import { updateUserName } from "@inefable/api"
 import { Send } from "lucide-react-native"
 import { Controller, useForm } from "react-hook-form"
+import { useSWRConfig } from "swr"
 
 import { useAuthStore } from "../../components/stores/auth"
 
 export default function AddName() {
   const { user } = useAuthStore()
+  const { mutate } = useSWRConfig()
+
   const {
     handleSubmit,
     control,
-    reset,
     formState: { isSubmitting },
   } = useForm()
 
@@ -20,7 +22,7 @@ export default function AddName() {
     const res = await updateUserName({ name: data.name, user })
 
     if (res.ok) {
-      reset({ name: "" })
+      await mutate(["getUserProfile", user.id])
     }
   })
 
