@@ -13,15 +13,15 @@ import AsyncStorage from "@react-native-async-storage/async-storage"
 import clsx from "clsx"
 import { Trash } from "lucide-react-native"
 import { Controller, useForm } from "react-hook-form"
-import useSWR, { useSWRConfig } from "swr"
+import useSWR from "swr"
 
 import GoBack from "~/components/common/go-back"
+import { type ValidateCodeResponse } from "~/components/common/security-code"
 import { useAuthStore } from "~/components/stores/auth"
+import supabase from "~/lib/supabase"
 
 export default function DeleteCode() {
   const { user, session } = useAuthStore()
-  const { mutate } = useSWRConfig()
-  const router = useRouter()
 
   const { data: codeData } = useSWR(
     user?.id ? ["getUserCode", user.id] : null,
@@ -38,24 +38,39 @@ export default function DeleteCode() {
     if (!user) return
 
     if (codeData?.data && codeData.data.length > 0) {
-      // Delete with code
-    } else {
-      // Delete with email
-      if (data.value == user.email) {
-        const res = await fetch(
-          "http://localhost:3000/api/delete-inefable-user",
-          {
-            method: "POST",
-            headers: {
-              "Content-type": "application/json",
-              Authorization: session?.access_token || "",
-            },
+      const res: ValidateCodeResponse = await fetch(
+        "http://localhost:3000/api/validate-code",
+        {
+          method: "POST",
+          headers: {
+            "Content-type": "application/json",
+            Authorization: session?.access_token || "",
           },
-        ).then((res) => res.json())
+          body: JSON.stringify({ value: data.value }),
+        },
+      ).then((res) => res.json())
 
-        console.log(res, "res")
+      if (!res.isValid) return
+    } else {
+      if (data.value != user?.email) {
+        return
       }
     }
+
+    const res = await fetch("http://localhost:3000/api/delete-inefable-user", {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+        Authorization: session?.access_token || "",
+      },
+    }).then((res) => res.json())
+
+    if (res.ok) {
+      await AsyncStorage.removeItem("unlockUntil")
+      await supabase.auth.signOut()
+    }
+
+    console.log(res, "res")
   })
 
   return (
