@@ -14,6 +14,7 @@ import { useSWRConfig } from "swr"
 
 import { type ValidateCodeResponse } from "~/components/common/security-code"
 import { useAuthStore } from "~/components/stores/auth"
+import { SITE_URL } from "~/lib/utils"
 
 export default function CreateCode() {
   const { user, session } = useAuthStore()
@@ -29,7 +30,7 @@ export default function CreateCode() {
   const handleCode = handleSubmit(async (data) => {
     if (!user) return
     const res: ValidateCodeResponse = await fetch(
-      "http://localhost:3000/api/create-code",
+      `${SITE_URL}/api/create-code`,
       {
         method: "POST",
         headers: {

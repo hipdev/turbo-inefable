@@ -5,8 +5,8 @@ import { createClient } from "@supabase/supabase-js"
 import "react-native-url-polyfill/auto"
 
 const supabase = createClient(
-  Constants.expoConfig.extra.supabaseUrl,
-  Constants.expoConfig.extra.supabasePublicKey,
+  Constants?.expoConfig?.extra?.supabaseUrl || "",
+  Constants?.expoConfig?.extra?.supabasePublicKey || "",
   {
     auth: {
       storage: AsyncStorage,

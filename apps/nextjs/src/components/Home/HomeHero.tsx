@@ -23,14 +23,14 @@ export default function HomeHero() {
         </div>
       </div>
 
-      <div className="absolute bottom-40 right-40 h-[70vh] w-[35vw]">
+      <div className="absolute bottom-40 right-40 h-[50vh] w-[35vw] overflow-hidden rounded-md">
         <Image
           src={heroImage}
           alt="logo"
           fill
           draggable={false}
           sizes="(min-width: 1024px) 45vw, 80vw"
-          className="bottom-0 h-full w-full object-contain object-bottom"
+          className="bottom-0 h-full w-full object-cover object-bottom "
           priority
           quality={90}
         />

@@ -8,6 +8,8 @@ export const currentMonthAndDay = new Date().toLocaleDateString("es-CO", {
 type ToastType = {
   isUpdate?: boolean
 }
+
+export const SITE_URL = "https://www.inefable.us"
 export const successToast = ({ isUpdate = false }: Partial<ToastType> = {}) => {
   Toast.show({
     type: "success",
