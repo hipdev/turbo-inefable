@@ -2,13 +2,15 @@ import { headers } from "next/headers"
 import { NextResponse } from "next/server"
 import { createClient } from "@supabase/supabase-js"
 
+import { env } from "~/env.mjs"
+
 export async function POST() {
   const headersList = headers()
   const BearerToken = headersList.get("Authorization")
 
   const supabase = createClient(
-    process.env.SUPABASE_URL || "",
-    process.env.SUPABASE_PUBLIC_KEY || "",
+    env.NEXT_PUBLIC_SUPABASE_URL || "",
+    env.NEXT_PUBLIC_SUPABASE_PUBLIC_KEY || "",
     {
       global: { headers: { Authorization: `Bearer ${BearerToken}` } },
       auth: { persistSession: false },
@@ -16,8 +18,8 @@ export async function POST() {
   )
 
   const supabaseServer = createClient(
-    process.env.SUPABASE_URL || "",
-    process.env.SUPABASE_SERVICE_ROLE || "",
+    env.NEXT_PUBLIC_SUPABASE_URL || "",
+    env.SUPABASE_SERVICE_ROLE || "",
   )
 
   if (BearerToken && typeof BearerToken == "string") {
