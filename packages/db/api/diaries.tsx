@@ -33,7 +33,7 @@ export async function createDiary({
 }: {
   isTitle: boolean
   formData: string
-  user_id: string
+  user_id: string | undefined
 }) {
   const currentDate = new Date()
   const today = format(currentDate, "yyyy-MM-dd")

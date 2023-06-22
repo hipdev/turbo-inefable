@@ -105,7 +105,7 @@ const SecurityCode = () => {
         key={index}
         // style={[styles.cell, isFocused && styles.focusCell]}
         className={clsx(
-          "ml-4 h-16 w-16 bg-black/20 text-center text-3xl leading-[60px] ",
+          "ml-2 h-12 w-12 rounded-sm bg-black/20 text-center text-3xl leading-[45px]",
           isFocused && "bg-black/30",
         )}
         onLayout={getCellOnLayoutHandler(index)}
@@ -138,7 +138,7 @@ const SecurityCode = () => {
             renderCell={renderCell}
           />
           <Text
-            className="h-20 w-20 text-center text-4xl leading-[55px]"
+            className="h-20 w-20 text-center text-4xl leading-[45px]"
             onPress={toggleMask}
           >
             {enableMask ? "🙈" : "🐵"}

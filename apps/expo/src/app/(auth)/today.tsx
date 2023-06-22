@@ -13,7 +13,7 @@ import { TapGestureHandler } from "react-native-gesture-handler"
 import { useRouter } from "expo-router"
 import { createDiary, getToday, updateDiary } from "@inefable/api"
 import { debounce } from "lodash"
-import { Pencil } from "lucide-react-native"
+import { Camera, Pencil } from "lucide-react-native"
 import { Controller, useForm } from "react-hook-form"
 import useSWR, { useSWRConfig } from "swr"
 
@@ -77,13 +77,23 @@ export default function TodayScreen() {
 
   return (
     <SafeAreaView className="relative flex-1">
-      {/* Floating button */}
+      {/* Floating button Edit Story */}
       <TouchableOpacity
         onPress={() => router.push("/edit-today")}
         className="absolute bottom-20 right-8 z-10 rounded-full bg-black/10 p-3"
       >
         <View>
           <Pencil size={24} color="black" />
+        </View>
+      </TouchableOpacity>
+
+      {/* Floating button Add Picture */}
+      <TouchableOpacity
+        onPress={() => router.push("/edit-today")}
+        className="absolute bottom-20 left-8 z-10 rounded-full bg-black/10 p-3"
+      >
+        <View>
+          <Camera size={24} color="black" />
         </View>
       </TouchableOpacity>
 
