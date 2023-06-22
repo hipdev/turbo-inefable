@@ -1,16 +1,14 @@
-import Image from "next/image";
-import Link from "next/link";
-import logo from "public/legion-logo.png";
+import Image from "next/image"
+import Link from "next/link"
 import {
   AiFillLinkedin,
   AiOutlineInstagram,
   AiOutlineTwitter,
-} from "react-icons/ai";
+} from "react-icons/ai"
 
 export const Footer = () => {
   return (
     <footer className="flex flex-col items-center justify-center bg-white pb-6 pt-8 md:pt-10">
-      <Image src={logo} alt="logo" width="146" height="40" />
       <p className="mt-5 font-semibold text-black/80 md:mt-7">
         Fueling the future of mental health
       </p>
@@ -58,5 +56,5 @@ export const Footer = () => {
         </p>
       </div>
     </footer>
-  );
-};
+  )
+}

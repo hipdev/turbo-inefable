@@ -1,34 +1,29 @@
-import Image from "next/image";
-import heroImage from "public/hero-image.png";
-import { Button, Title } from "src/design-system/index";
+import Image from "next/image"
+import heroImage from "public/family.jpeg"
+import { Button, Title } from "src/design-system/index"
 
 export default function HomeHero() {
   return (
     <section className="home-hero relative bg-gradient-to-t from-gray-100 to-white pb-16 pt-10 lg:pt-0">
       <div className="main-wrapper relative z-10 flex h-full items-center backdrop-blur-sm md:backdrop-blur-0">
         <div className="md:w-1/2">
-          <Title size="huge" className="mb-7 font-bold" as="h1">
-            World-class psychiatry.
+          <Title size="huge" className="mb-7 font-bold" as="h2">
+            Inefable
           </Title>
           <Title size="xxxlarge" className="text-black/80">
-            Covered by your insurance
+            Porque tu salud mental es importante
           </Title>
           <p className="mt-3 text-lg text-black/70">
-            Schedule today with a Board-Certified provider and take a leap
-            forward in your mental health. Get started with a free consultation!
+            Espero te guste lo que pasará aquí, porque yo lo estoy disfrutando.
           </p>
 
-          <a
-            href="https://form.jotform.com/231237140729048"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Button className="mt-7 px-7 py-3 font-semibold">Contact us</Button>
-          </a>
+          <Button className="mt-7 px-7 py-3 font-semibold">
+            Sitio en construcción
+          </Button>
         </div>
       </div>
 
-      <div className="absolute bottom-0 right-0 h-[90vh] w-[45vw] md:right-20">
+      <div className="absolute bottom-40 right-40 h-[70vh] w-[35vw]">
         <Image
           src={heroImage}
           alt="logo"
@@ -41,5 +36,5 @@ export default function HomeHero() {
         />
       </div>
     </section>
-  );
+  )
 }

@@ -10,9 +10,6 @@ export default {
       fontFamily: {
         sans: ["var(--font-inter)"],
       },
-      colors: {
-        primary: "#29ACF5",
-      },
       borderRadius: {
         "2sm": "4px",
       },

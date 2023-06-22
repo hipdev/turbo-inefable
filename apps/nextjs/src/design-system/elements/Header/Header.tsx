@@ -1,25 +1,15 @@
-import Image from "next/image";
-import Link from "next/link";
-import logo from "public/legion-logo.png";
-import { AiOutlineMenu } from "react-icons/ai";
-import { HiPhone } from "react-icons/hi";
-import { Button } from "src/design-system/index";
+import Link from "next/link"
+import { AiOutlineMenu } from "react-icons/ai"
+import { HiPhone } from "react-icons/hi"
+import { Button } from "src/design-system/index"
 
-import HeaderNav from "./HeaderNav";
+import HeaderNav from "./HeaderNav"
 
 export const Header = () => {
   return (
     <header className="flex items-center justify-between py-5">
       <div className="flex items-center gap-8 xl:gap-16">
-        <Link href="/">
-          <Image
-            src={logo}
-            alt="logo"
-            width="146"
-            height="40"
-            draggable={false}
-          />
-        </Link>
+        <Link href="/">I</Link>
         <HeaderNav />
       </div>
       <div className="hidden gap-2 lg:flex">
@@ -36,5 +26,5 @@ export const Header = () => {
         </button>
       </div>
     </header>
-  );
-};
+  )
+}
