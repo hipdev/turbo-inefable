@@ -1,5 +1,5 @@
 {
-  "name": "@acme/nextjs",
+  "name": "@inefable/nextjs",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -28,8 +28,8 @@
     "zod": "^3.21.4"
   },
   "devDependencies": {
-    "@acme/eslint-config": "^0.1.0",
-    "@acme/tailwind-config": "^0.1.0",
+    "@inefable/eslint-config": "^0.1.0",
+    "@inefable/tailwind-config": "^0.1.0",
     "@types/bcrypt": "^5.0.0",
     "@types/node": "^18.16.5",
     "@types/react": "^18.2.8",

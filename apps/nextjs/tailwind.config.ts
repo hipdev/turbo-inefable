@@ -1,6 +1,6 @@
-import type { Config } from "tailwindcss";
+import type { Config } from "tailwindcss"
 
-import baseConfig from "@acme/tailwind-config";
+import baseConfig from "@inefable/tailwind-config"
 
 export default {
   content: ["./src/**/*.tsx"],
@@ -18,4 +18,4 @@ export default {
       },
     },
   },
-} satisfies Config;
+} satisfies Config

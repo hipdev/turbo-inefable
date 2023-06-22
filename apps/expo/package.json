@@ -1,5 +1,5 @@
 {
-  "name": "@acme/expo",
+  "name": "@inefable/expo",
   "version": "0.1.0",
   "main": "index.tsx",
   "scripts": {
@@ -51,8 +51,8 @@
     "zustand": "^4.3.8"
   },
   "devDependencies": {
-    "@acme/eslint-config": "^0.1.0",
-    "@acme/tailwind-config": "^0.1.0",
+    "@inefable/eslint-config": "^0.1.0",
+    "@inefable/tailwind-config": "^0.1.0",
     "@babel/core": "^7.21.8",
     "@babel/preset-env": "^7.21.5",
     "@babel/runtime": "^7.21.5",

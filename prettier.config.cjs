@@ -23,7 +23,7 @@ const config = {
     "^(expo(.*)$)|^(expo$)",
     "<THIRD_PARTY_MODULES>",
     "",
-    "^@acme/(.*)$",
+    "^@inefable/(.*)$",
     "",
     "^~/utils/(.*)$",
     "^~/components/(.*)$",
@@ -33,6 +33,6 @@ const config = {
   ],
   importOrderParserPlugins: ["typescript", "jsx", "decorators-legacy"],
   importOrderTypeScriptVersion: "5.0.4",
-};
+}
 
-module.exports = config;
+module.exports = config

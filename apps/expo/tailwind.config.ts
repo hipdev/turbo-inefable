@@ -1,6 +1,5 @@
+import baseConfig from "@inefable/tailwind-config"
 import { type Config } from "tailwindcss"
-
-import baseConfig from "@acme/tailwind-config"
 
 export default {
   presets: [baseConfig],
