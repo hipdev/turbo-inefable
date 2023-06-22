@@ -10,13 +10,6 @@ export async function POST(request: Request) {
   const headersList = headers()
   const BearerToken = headersList.get("Authorization")
 
-  console.log(
-    env.NEXT_PUBLIC_SUPABASE_URL,
-    env.NEXT_PUBLIC_SUPABASE_PUBLIC_KEY,
-    "env",
-    BearerToken,
-  )
-
   const supabase = createClient(
     env.NEXT_PUBLIC_SUPABASE_URL || "",
     env.NEXT_PUBLIC_SUPABASE_PUBLIC_KEY || "",

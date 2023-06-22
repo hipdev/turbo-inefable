@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { Text, TouchableOpacity, View } from "react-native"
+import { Text, View } from "react-native"
 import {
   CodeField,
   Cursor,
@@ -10,6 +10,7 @@ import { useRouter } from "expo-router"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import clsx from "clsx"
 
+import { SITE_URL } from "~/lib/utils"
 import { useAuthStore } from "../stores/auth"
 
 const CELL_COUNT = 4
@@ -41,7 +42,7 @@ const SecurityCode = () => {
   useEffect(() => {
     const fetchCode = async (): Promise<ValidateCodeResponse> => {
       const res: ValidateCodeResponse = await fetch(
-        "http://localhost:3000/api/validate-code",
+        `${SITE_URL}/api/validate-code`,
         {
           method: "POST",
           headers: {

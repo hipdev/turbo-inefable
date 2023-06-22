@@ -8,17 +8,19 @@ import {
 import { TextInput } from "react-native-gesture-handler"
 import * as Progress from "react-native-progress"
 import { Stack, useRouter } from "expo-router"
-import { getUserCode } from "@inefable/api"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import clsx from "clsx"
 import { Trash } from "lucide-react-native"
 import { Controller, useForm } from "react-hook-form"
 import useSWR from "swr"
 
+import { getUserCode } from "@inefable/api"
+
 import GoBack from "~/components/common/go-back"
 import { type ValidateCodeResponse } from "~/components/common/security-code"
 import { useAuthStore } from "~/components/stores/auth"
 import supabase from "~/lib/supabase"
+import { SITE_URL } from "~/lib/utils"
 
 export default function DeleteCode() {
   const { user, session } = useAuthStore()
@@ -39,7 +41,7 @@ export default function DeleteCode() {
 
     if (codeData?.data && codeData.data.length > 0) {
       const res: ValidateCodeResponse = await fetch(
-        "http://localhost:3000/api/validate-code",
+        `${SITE_URL}/api/validate-code`,
         {
           method: "POST",
           headers: {
@@ -57,7 +59,7 @@ export default function DeleteCode() {
       }
     }
 
-    const res = await fetch("http://localhost:3000/api/delete-inefable-user", {
+    const res = await fetch(`${SITE_URL}/api/delete-inefable-user`, {
       method: "POST",
       headers: {
         "Content-type": "application/json",
@@ -69,8 +71,6 @@ export default function DeleteCode() {
       await AsyncStorage.removeItem("unlockUntil")
       await supabase.auth.signOut()
     }
-
-    console.log(res, "res")
   })
 
   return (

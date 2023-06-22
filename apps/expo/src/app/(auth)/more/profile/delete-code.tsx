@@ -8,14 +8,16 @@ import {
 import { TextInput } from "react-native-gesture-handler"
 import * as Progress from "react-native-progress"
 import { useRouter } from "expo-router"
-import { deleteUserCode } from "@inefable/api"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { Trash } from "lucide-react-native"
 import { Controller, useForm } from "react-hook-form"
 import { useSWRConfig } from "swr"
 
+import { deleteUserCode } from "@inefable/api"
+
 import { type ValidateCodeResponse } from "~/components/common/security-code"
 import { useAuthStore } from "~/components/stores/auth"
+import { SITE_URL } from "~/lib/utils"
 
 export default function DeleteCode() {
   const { user, session } = useAuthStore()
@@ -31,7 +33,7 @@ export default function DeleteCode() {
   const handleName = handleSubmit(async (data) => {
     if (!user) return
     const res: ValidateCodeResponse = await fetch(
-      "http://localhost:3000/api/validate-code",
+      `${SITE_URL}/api/validate-code`,
       {
         method: "POST",
         headers: {
