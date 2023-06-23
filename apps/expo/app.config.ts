@@ -3,7 +3,7 @@ import type { ExpoConfig } from "@expo/config"
 import "dotenv/config"
 
 const defineConfig = (): ExpoConfig => ({
-  name: "inefable",
+  name: "Inefable",
   slug: "inefable",
   scheme: "inefable",
   version: "1.0.0",

@@ -49,7 +49,7 @@ export default function Login() {
     console.log(redirectURL, "url")
 
     const result = await supabase.auth.signInWithOtp({
-      email,
+      email: email.trim(),
       options: {
         emailRedirectTo: redirectURL,
       },

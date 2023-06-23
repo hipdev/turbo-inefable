@@ -11,10 +11,11 @@ import {
 } from "react-native"
 import { TouchableOpacity } from "react-native-gesture-handler"
 import { Stack } from "expo-router"
-import { createDiary, getToday, updateDiary } from "@inefable/api"
 import { Save } from "lucide-react-native"
 import { Controller, useForm } from "react-hook-form"
 import useSWR from "swr"
+
+import { createDiary, getToday, updateDiary } from "@inefable/api"
 
 import GoBack from "~/components/common/go-back"
 import { useAuthStore } from "~/components/stores/auth"
@@ -103,7 +104,7 @@ export default function EditDiary() {
             keyboardDismissMode="on-drag"
           >
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-              <View className="mt-5 flex-1 rounded-md border border-black/10 bg-white p-3 shadow-sm">
+              <View className="mt-5 h-[80vh] flex-1 rounded-md border border-black/10 bg-white p-3 shadow-sm">
                 <ScrollView
                   contentContainerStyle={{ flexGrow: 1 }}
                   keyboardShouldPersistTaps="never"
@@ -122,7 +123,7 @@ export default function EditDiary() {
                         value={value}
                         defaultValue={todayData?.diary || ""}
                         placeholder="Hoy"
-                        className="h-[70vh] flex-1 overflow-y-scroll text-xl text-black/70"
+                        className="items-start overflow-y-scroll text-xl text-black/70"
                         inputMode="text"
                         placeholderTextColor={"#444"}
                         autoCapitalize="sentences"

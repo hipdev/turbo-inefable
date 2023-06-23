@@ -1,9 +1,10 @@
 import { Text, TextInput, TouchableOpacity, View } from "react-native"
 import * as Progress from "react-native-progress"
-import { updateUserName } from "@inefable/api"
 import { Send } from "lucide-react-native"
 import { Controller, useForm } from "react-hook-form"
 import { useSWRConfig } from "swr"
+
+import { updateUserName } from "@inefable/api"
 
 import { useAuthStore } from "../../components/stores/auth"
 
@@ -27,7 +28,7 @@ export default function AddName() {
   })
 
   return (
-    <>
+    <View className="mx-4">
       <Text className="text-4xl text-black/80">
         Hola, antes de empezar, me gustaría saber tu nombre
       </Text>
@@ -68,6 +69,6 @@ export default function AddName() {
         un banco. {"\n"}
         Solo tu tienes acceso a toda tu información, no se comparte con nadie.
       </Text>
-    </>
+    </View>
   )
 }

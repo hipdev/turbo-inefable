@@ -1,7 +1,8 @@
-import { Text } from "react-native"
+import { Text, View } from "react-native"
 import { Link } from "expo-router"
-import { getUserProfile } from "@inefable/api"
 import useSWR from "swr"
+
+import { getUserProfile } from "@inefable/api"
 
 import { useAuthStore } from "../../components/stores/auth"
 
@@ -14,7 +15,7 @@ export default function Welcome() {
   )
 
   return (
-    <>
+    <View className="mx-4">
       <Text className="text-4xl text-black/80">
         Gracias {userProfile?.data?.name.split(" ")[0]}, aquí estará tu diario
       </Text>
@@ -34,6 +35,6 @@ export default function Welcome() {
       >
         Empezar hoy
       </Link>
-    </>
+    </View>
   )
 }

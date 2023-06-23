@@ -10,12 +10,13 @@ import {
   View,
 } from "react-native"
 import { TapGestureHandler } from "react-native-gesture-handler"
-import { useRouter } from "expo-router"
-import { createDiary, getToday, updateDiary } from "@inefable/api"
+import { Stack, useRouter } from "expo-router"
 import { debounce } from "lodash"
 import { Camera, Pencil } from "lucide-react-native"
 import { Controller, useForm } from "react-hook-form"
 import useSWR, { useSWRConfig } from "swr"
+
+import { createDiary, getToday, updateDiary } from "@inefable/api"
 
 import { useAuthStore } from "~/components/stores/auth"
 import { successToast } from "~/lib/utils"
@@ -76,81 +77,84 @@ export default function TodayScreen() {
   }, 1500)
 
   return (
-    <SafeAreaView className="relative flex-1">
-      {/* Floating button Edit Story */}
-      <TouchableOpacity
-        onPress={() => router.push("/edit-today")}
-        className="absolute bottom-20 right-8 z-10 rounded-full bg-black/10 p-3"
-      >
-        <View>
-          <Pencil size={24} color="black" />
-        </View>
-      </TouchableOpacity>
+    <>
+      <Stack.Screen
+        options={{
+          headerShown: true,
+          headerTitle: "",
+          title: "Hoy",
+          headerLeft: () => (
+            <TouchableOpacity onPress={() => router.push("/edit-today/camera")}>
+              <View className="ml-4">
+                <Camera size={28} className="text-primary" />
+              </View>
+            </TouchableOpacity>
+          ),
+          headerRight: () => (
+            <TouchableOpacity onPress={() => router.push("/edit-today")}>
+              <View className="mr-4">
+                <Pencil size={28} className="text-primary" />
+              </View>
+            </TouchableOpacity>
+          ),
+        }}
+      />
+      <SafeAreaView className="relative flex-1">
+        <KeyboardAvoidingView behavior="padding" className="flex-1">
+          <ScrollView className="mx-4 flex-1" keyboardDismissMode="on-drag">
+            <Text className="mt-4 text-center text-3xl font-medium capitalize text-black/80">
+              {currentDate.toLocaleDateString("es-CO", {
+                month: "long",
+                day: "numeric",
+              })}
+            </Text>
 
-      {/* Floating button Add Picture */}
-      <TouchableOpacity
-        onPress={() => router.push("/edit-today")}
-        className="absolute bottom-20 left-8 z-10 rounded-full bg-black/10 p-3"
-      >
-        <View>
-          <Camera size={24} color="black" />
-        </View>
-      </TouchableOpacity>
+            <TouchableWithoutFeedback>
+              <View className="mt-5 h-10 flex-1">
+                <Controller
+                  control={control}
+                  rules={{
+                    required: true,
+                    validate: (value) => value.length > 1,
+                  }}
+                  name="title"
+                  render={({ field: { onChange, onBlur, value } }) => (
+                    <TextInput
+                      onBlur={onBlur}
+                      onChangeText={(text) => {
+                        onChange(text)
+                        debouncedSaveTitle(text)
+                      }}
+                      value={value}
+                      defaultValue={todayData?.title || ""}
+                      placeholder="Titulo...(Opcional)"
+                      className="h-9 flex-1 text-center text-xl text-primary"
+                      inputMode="text"
+                      placeholderTextColor={"#444"}
+                      autoCapitalize="sentences"
+                      autoCorrect={false}
+                      maxLength={40}
+                    />
+                  )}
+                />
+              </View>
+            </TouchableWithoutFeedback>
 
-      <KeyboardAvoidingView behavior="padding" className="flex-1">
-        <ScrollView className="mx-4 mt-3 flex-1" keyboardDismissMode="on-drag">
-          <Text className="mt-4 text-center text-3xl font-medium capitalize text-black/80">
-            {currentDate.toLocaleDateString("es-CO", {
-              month: "long",
-              day: "numeric",
-            })}
-          </Text>
-
-          <TouchableWithoutFeedback>
-            <View className="mt-5 h-10 flex-1">
-              <Controller
-                control={control}
-                rules={{
-                  required: true,
-                  validate: (value) => value.length > 1,
-                }}
-                name="title"
-                render={({ field: { onChange, onBlur, value } }) => (
-                  <TextInput
-                    onBlur={onBlur}
-                    onChangeText={(text) => {
-                      onChange(text)
-                      debouncedSaveTitle(text)
-                    }}
-                    value={value}
-                    defaultValue={todayData?.title || ""}
-                    placeholder="Titulo...(Opcional)"
-                    className="h-9 flex-1 text-center text-xl text-primary"
-                    inputMode="text"
-                    placeholderTextColor={"#444"}
-                    autoCapitalize="sentences"
-                    autoCorrect={false}
-                    maxLength={40}
-                  />
-                )}
-              />
+            <View>
+              <TapGestureHandler
+                numberOfTaps={2}
+                onActivated={() => router.push("/edit-today")}
+              >
+                <Text className="mt-5 text-lg">
+                  {todayData?.diary
+                    ? todayData.diary
+                    : "Para escribir puedes dar un doble tap a este texto o presionar el boton de editar en la esquina inferior derecha."}
+                </Text>
+              </TapGestureHandler>
             </View>
-          </TouchableWithoutFeedback>
-
-          <View>
-            <TapGestureHandler
-              numberOfTaps={2}
-              onActivated={() => router.push("/edit-today")}
-            >
-              <Text className="mt-5 text-lg">
-                {todayData?.diary
-                  ? todayData.diary
-                  : "Para escribir puedes dar un doble tap a este texto o presionar el boton de editar en la esquina inferior derecha."}
-              </Text>
-            </TapGestureHandler>
-          </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
-    </SafeAreaView>
+          </ScrollView>
+        </KeyboardAvoidingView>
+      </SafeAreaView>
+    </>
   )
 }

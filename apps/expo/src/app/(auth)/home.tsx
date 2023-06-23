@@ -1,6 +1,7 @@
 import { SafeAreaView, ScrollView } from "react-native"
-import { getDiaries, getUserProfile } from "@inefable/api"
 import useSWR from "swr"
+
+import { getDiaries, getUserProfile } from "@inefable/api"
 
 import AddName from "~/components/home/add-name"
 import Diaries from "~/components/home/diaries"
@@ -22,8 +23,8 @@ export default function HomeScreen() {
   console.log(userProfile, "userProfile")
 
   return (
-    <SafeAreaView className="flex-1">
-      <ScrollView className="mx-4 mt-10">
+    <SafeAreaView className="mt-4 flex-1">
+      <ScrollView className="mt-10">
         {!userProfile?.data?.name ? (
           <AddName />
         ) : diaries?.length == 0 ? (
