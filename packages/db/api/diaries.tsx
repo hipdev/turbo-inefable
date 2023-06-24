@@ -47,11 +47,11 @@ export async function createDiary({
   try {
     const { error } = await supabase
       .from("diaries")
-      .insert([
+      .insert(
         isTitle
           ? { ...commonData, title: formData }
           : { ...commonData, diary: formData },
-      ])
+      )
 
     if (error) {
       return { error }
@@ -65,21 +65,21 @@ export async function createDiary({
 export async function updateDiary({
   isTitle,
   formData,
-  story_id,
+  diary_id,
 }: {
   isTitle: boolean
   formData: string
-  story_id: string
+  diary_id: string
 }) {
   try {
     const { error } = await supabase
       .from("diaries")
-      .update([
+      .update(
         isTitle
           ? { updated_at: new Date(), title: formData }
           : { updated_at: new Date(), diary: formData },
-      ])
-      .eq("id", story_id)
+      )
+      .eq("id", diary_id)
 
     if (error) {
       return { error }

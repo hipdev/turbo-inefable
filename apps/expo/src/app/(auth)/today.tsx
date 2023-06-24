@@ -66,7 +66,7 @@ export default function TodayScreen() {
     const res = await updateDiary({
       isTitle: true,
       formData: title,
-      story_id: todayData.id,
+      diary_id: todayData.id,
     })
 
     if (res.ok) {

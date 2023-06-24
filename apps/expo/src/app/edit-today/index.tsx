@@ -37,36 +37,37 @@ export default function EditDiary() {
     formState: { errors, isSubmitting },
   } = useForm()
 
-  const handleDiary = async ({ story }) => {
+  const handleDiary = handleSubmit(async (data) => {
     if (!todayData) {
       const res = await createDiary({
         isTitle: false,
-        formData: story,
+        formData: data.diary,
         user_id: user?.id,
       })
 
       if (res.ok) {
         successToast()
-        mutate()
+        await mutate()
       }
 
       if (res.error) {
         console.error(res.error, "error")
       }
+      return
     }
 
     // There is a diary, so we update it
     const res = await updateDiary({
       isTitle: false,
-      formData: story,
-      story_id: todayData?.id,
+      formData: data.diary,
+      diary_id: todayData?.id,
     })
 
     if (res.ok) {
       successToast({ isUpdate: true })
-      mutate()
+      await mutate()
     }
-  }
+  })
 
   return (
     <>
@@ -78,10 +79,7 @@ export default function EditDiary() {
           }),
           headerLeft: () => <GoBack />,
           headerRight: () => (
-            <TouchableOpacity
-              disabled={isSubmitting}
-              onPress={() => handleSubmit(handleDiary)()}
-            >
+            <TouchableOpacity disabled={isSubmitting} onPress={handleDiary}>
               <View className="mr-1">
                 <Save size={28} className="text-primary" />
               </View>
@@ -115,7 +113,7 @@ export default function EditDiary() {
                       required: true,
                       validate: (value) => value.length > 5,
                     }}
-                    name="story"
+                    name="diary"
                     render={({ field: { onChange, onBlur, value } }) => (
                       <TextInput
                         onBlur={onBlur}

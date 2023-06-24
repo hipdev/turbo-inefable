@@ -4,7 +4,9 @@ import { createClient } from "@supabase/supabase-js"
 
 import "react-native-url-polyfill/auto"
 
-const supabase = createClient(
+import { type Database } from "@inefable/api/api/types/supabase"
+
+const supabase = createClient<Database>(
   Constants?.expoConfig?.extra?.supabaseUrl || "",
   Constants?.expoConfig?.extra?.supabasePublicKey || "",
   {

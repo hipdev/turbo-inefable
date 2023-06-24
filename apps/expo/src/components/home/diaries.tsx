@@ -6,12 +6,12 @@ import clsx from "clsx"
 import { isToday, parseISO } from "date-fns"
 import useSWR from "swr"
 
-import { getUserCode } from "@inefable/api"
+import { getUserCode, type Diary } from "@inefable/api"
 
 import { useAuthStore } from "../../components/stores/auth"
 import SecurityCode from "../common/security-code"
 
-export default function Diaries({ diaries }) {
+export default function Diaries({ diaries }: { diaries: Diary[] }) {
   const { user } = useAuthStore()
   const router = useRouter()
 
@@ -55,26 +55,24 @@ export default function Diaries({ diaries }) {
       )}
       {(isAllowed || codeData?.data?.length == 0) &&
         diaries?.map((diary, index: number) => (
-          <>
-            <TouchableOpacity
-              onPress={() => {
-                if (isToday(parseISO(diary.date))) {
-                  router.push("/today")
-                }
-              }}
-              key={diary.id}
-              className={clsx(
-                "flex h-40  w-1/2 flex-row items-center justify-center pb-px",
-                index % 2 == 0 && "pr-px",
-              )}
-            >
-              <View className="h-full w-full items-center justify-center bg-black/20">
-                <Text className="text-lg font-bold text-black/80">
-                  {diary.date}
-                </Text>
-              </View>
-            </TouchableOpacity>
-          </>
+          <TouchableOpacity
+            onPress={() => {
+              if (isToday(parseISO(diary.date))) {
+                router.push("/today")
+              }
+            }}
+            key={diary.id}
+            className={clsx(
+              "flex h-40  w-1/2 flex-row items-center justify-center pb-px",
+              index % 2 == 0 && "pr-px",
+            )}
+          >
+            <View className="h-full w-full items-center justify-center bg-black/20">
+              <Text className="text-lg font-bold text-black/80">
+                {diary.date}
+              </Text>
+            </View>
+          </TouchableOpacity>
         ))}
     </View>
   )
