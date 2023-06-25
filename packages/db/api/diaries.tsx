@@ -89,3 +89,37 @@ export async function updateDiary({
     return { error }
   }
 }
+
+export async function saveDiaryPicture({
+  user_id,
+  formData,
+  diary_id,
+}: {
+  user_id: string
+  formData: FormData
+  diary_id: string
+}) {
+  try {
+    const { data, error } = await supabase.storage
+      .from("cdn-inefable")
+      .upload(`${user_id}/${diary_id}`, formData, { upsert: true })
+
+    if (error) {
+      return { error }
+    }
+
+    // Flag the picture in the diary
+    const { error: errorUpdate } = await supabase
+      .from("diaries")
+      .update({ has_picture: true })
+      .eq("id", diary_id)
+
+    if (errorUpdate) {
+      return { error }
+    }
+
+    return { data }
+  } catch (error) {
+    return { error }
+  }
+}

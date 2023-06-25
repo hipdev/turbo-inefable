@@ -23,14 +23,18 @@ export const successToast = ({ isUpdate = false }: Partial<ToastType> = {}) => {
   })
   return
 }
-export const errorToast = () => {
+
+type ErrorToastType = {
+  errorText?: string
+}
+
+export const errorToast = ({ errorText }: Partial<ErrorToastType> = {}) => {
   Toast.show({
     type: "error",
     text1: "Upss!",
-    text2: "Ocurrió un error al guardar 😢",
+    text2: errorText || "Ocurrió un error al guardar 😢",
     position: "bottom",
     visibilityTime: 2500,
     bottomOffset: 80,
   })
-  return
 }
