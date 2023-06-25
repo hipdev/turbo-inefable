@@ -67,10 +67,8 @@ export default function Diaries({ diaries }: { diaries: Diary[] }) {
               index % 2 == 0 && "pr-px",
             )}
           >
-            <View className="h-full w-full items-center justify-center bg-black/20">
-              <Text className="text-lg font-bold text-black/80">
-                {diary.date}
-              </Text>
+            <View className="h-full w-full items-center justify-center bg-zinc-800">
+              <Text className="text-lg font-bold text-white">{diary.date}</Text>
             </View>
           </TouchableOpacity>
         ))}

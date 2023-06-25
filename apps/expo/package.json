@@ -24,6 +24,7 @@
     "expo": "^48.0.19",
     "expo-camera": "~13.2.1",
     "expo-constants": "~14.2.1",
+    "expo-image-manipulator": "^11.1.1",
     "expo-linking": "~4.0.1",
     "expo-media-library": "~15.2.3",
     "expo-router": "^1.5.3",
@@ -51,12 +52,12 @@
     "zustand": "^4.3.8"
   },
   "devDependencies": {
-    "@inefable/eslint-config": "^0.1.0",
-    "@inefable/tailwind-config": "^0.1.0",
     "@babel/core": "^7.21.8",
     "@babel/preset-env": "^7.21.5",
     "@babel/runtime": "^7.21.5",
     "@expo/config-plugins": "^6.0.2",
+    "@inefable/eslint-config": "^0.1.0",
+    "@inefable/tailwind-config": "^0.1.0",
     "@types/babel__core": "^7.20.0",
     "@types/lodash": "^4.14.195",
     "@types/react": "^18.2.8",

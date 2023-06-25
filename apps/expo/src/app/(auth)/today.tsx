@@ -84,7 +84,9 @@ export default function TodayScreen() {
           headerTitle: "",
           title: "Hoy",
           headerLeft: () => (
-            <TouchableOpacity onPress={() => router.push("/edit-today/camera")}>
+            <TouchableOpacity
+              onPress={() => router.push("/edit-today/picture")}
+            >
               <View className="ml-4">
                 <Camera size={28} className="text-primary" />
               </View>
