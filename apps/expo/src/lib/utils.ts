@@ -10,6 +10,9 @@ type ToastType = {
 }
 
 export const SITE_URL = "https://www.inefable.us"
+export const BUCKET_URL =
+  "https://wvwiljxejnwmtlrvqlcw.supabase.co/storage/v1/object/public/cdn-inefable"
+
 export const successToast = ({ isUpdate = false }: Partial<ToastType> = {}) => {
   Toast.show({
     type: "success",

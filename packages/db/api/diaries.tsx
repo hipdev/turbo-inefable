@@ -25,6 +25,15 @@ export async function getDiaries([_key, user_id]: [string, string]) {
   return data
 }
 
+export function getDiaryPicture([_key, picture_path]: [string, string]) {
+  console.log(picture_path, "picture_path")
+  const { data } = supabase.storage
+    .from("cdn-inefable")
+    .getPublicUrl(picture_path)
+
+  return data
+}
+
 // Mutations
 export async function createDiary({
   isTitle,

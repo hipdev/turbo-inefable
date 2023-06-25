@@ -1,3 +1,11 @@
+export type Json =
+  | string
+  | number
+  | boolean
+  | null
+  | { [key: string]: Json }
+  | Json[]
+
 export interface Database {
   public: {
     Tables: {
@@ -29,7 +37,7 @@ export interface Database {
             columns: ["user_id"]
             referencedRelation: "users"
             referencedColumns: ["id"]
-          },
+          }
         ]
       }
       diaries: {
@@ -37,6 +45,7 @@ export interface Database {
           created_at: string | null
           date: string
           diary: string | null
+          has_picture: boolean | null
           id: string
           title: string | null
           updated_at: string | null
@@ -47,6 +56,7 @@ export interface Database {
           created_at?: string | null
           date: string
           diary?: string | null
+          has_picture?: boolean | null
           id?: string
           title?: string | null
           updated_at?: string | null
@@ -57,6 +67,7 @@ export interface Database {
           created_at?: string | null
           date?: string
           diary?: string | null
+          has_picture?: boolean | null
           id?: string
           title?: string | null
           updated_at?: string | null
@@ -69,7 +80,7 @@ export interface Database {
             columns: ["user_id"]
             referencedRelation: "users"
             referencedColumns: ["id"]
-          },
+          }
         ]
       }
       profiles: {
@@ -100,7 +111,7 @@ export interface Database {
             columns: ["user_id"]
             referencedRelation: "users"
             referencedColumns: ["id"]
-          },
+          }
         ]
       }
     }

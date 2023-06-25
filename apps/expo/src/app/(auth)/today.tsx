@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import {
+  Image,
   KeyboardAvoidingView,
   SafeAreaView,
   ScrollView,
@@ -16,19 +17,30 @@ import { Camera, Pencil } from "lucide-react-native"
 import { Controller, useForm } from "react-hook-form"
 import useSWR, { useSWRConfig } from "swr"
 
-import { createDiary, getToday, updateDiary } from "@inefable/api"
+import {
+  createDiary,
+  getDiaryPicture,
+  getToday,
+  updateDiary,
+} from "@inefable/api"
 
 import { useAuthStore } from "~/components/stores/auth"
-import { successToast } from "~/lib/utils"
+import { BUCKET_URL, successToast } from "~/lib/utils"
 
 export default function TodayScreen() {
-  const { user } = useAuthStore()
+  const { user, session } = useAuthStore()
   const router = useRouter()
   const [currentDate] = useState(new Date())
 
   const { data: todayData, mutate: mutateToday } = useSWR(
     user?.id ? ["getToday", user.id] : null,
     getToday,
+  )
+  const { data: pictureData } = useSWR(
+    todayData?.has_picture
+      ? ["getDiaryPicture", `${user?.id}/${todayData?.id}`]
+      : null,
+    getDiaryPicture,
   )
 
   // Mutate global data
@@ -39,6 +51,8 @@ export default function TodayScreen() {
   useEffect(() => {
     setValue("title", todayData?.title)
   }, [todayData?.title, setValue])
+
+  console.log(`${BUCKET_URL}/${user?.id}/${todayData.id}`, "pictureData")
 
   const debouncedSaveTitle = debounce(async (title) => {
     // if there is no diary, we create it
@@ -104,6 +118,20 @@ export default function TodayScreen() {
       <SafeAreaView className="relative flex-1">
         <KeyboardAvoidingView behavior="padding" className="flex-1">
           <ScrollView className="mx-4 flex-1" keyboardDismissMode="on-drag">
+            {todayData?.has_picture ? (
+              <>
+                <View className="h-40 w-full">
+                  <Image
+                    source={{
+                      uri: `${BUCKET_URL}/${user?.id}/${todayData.id}`,
+                    }}
+                    className="w-full flex-1 object-contain"
+                    alt="Foto del diario"
+                  />
+                </View>
+              </>
+            ) : null}
+
             <Text className="mt-4 text-center text-3xl font-medium capitalize text-black/80">
               {currentDate.toLocaleDateString("es-CO", {
                 month: "long",
