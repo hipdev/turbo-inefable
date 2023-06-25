@@ -36,12 +36,6 @@ export default function TodayScreen() {
     user?.id ? ["getToday", user.id] : null,
     getToday,
   )
-  const { data: pictureData } = useSWR(
-    todayData?.has_picture
-      ? ["getDiaryPicture", `${user?.id}/${todayData?.id}`]
-      : null,
-    getDiaryPicture,
-  )
 
   // Mutate global data
   const { mutate } = useSWRConfig()
@@ -51,8 +45,6 @@ export default function TodayScreen() {
   useEffect(() => {
     setValue("title", todayData?.title)
   }, [todayData?.title, setValue])
-
-  console.log(`${BUCKET_URL}/${user?.id}/${todayData.id}`, "pictureData")
 
   const debouncedSaveTitle = debounce(async (title) => {
     // if there is no diary, we create it
@@ -118,12 +110,12 @@ export default function TodayScreen() {
       <SafeAreaView className="relative flex-1">
         <KeyboardAvoidingView behavior="padding" className="flex-1">
           <ScrollView className="mx-4 flex-1" keyboardDismissMode="on-drag">
-            {todayData?.has_picture ? (
+            {todayData?.picture_id ? (
               <>
                 <View className="h-40 w-full">
                   <Image
                     source={{
-                      uri: `${BUCKET_URL}/${user?.id}/${todayData.id}`,
+                      uri: `${BUCKET_URL}/${todayData?.picture_id}`,
                     }}
                     className="w-full flex-1 object-contain"
                     alt="Foto del diario"

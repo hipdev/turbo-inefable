@@ -11,7 +11,7 @@ import {
 import { FlipType, manipulateAsync, SaveFormat } from "expo-image-manipulator"
 import { Stack, useRouter } from "expo-router"
 import { SwitchCamera, Zap, ZapOff } from "lucide-react-native"
-import useSWR from "swr"
+import useSWR, { useSWRConfig } from "swr"
 
 import { getToday, saveDiaryPicture } from "@inefable/api"
 
@@ -27,6 +27,7 @@ export default function EditDiary() {
   const cameraRef = useRef<Camera | null>(null)
 
   const router = useRouter()
+  const { mutate } = useSWRConfig()
 
   const { user } = useAuthStore()
 
@@ -48,7 +49,6 @@ export default function EditDiary() {
 
       try {
         let picture = await cameraRef?.current.takePictureAsync({ exif: true })
-        console.log(picture, "picture")
         if (type === CameraType.front) {
           picture = await manipulateAsync(
             picture.uri,
@@ -65,8 +65,6 @@ export default function EditDiary() {
   }
 
   const savePicture = async () => {
-    console.log(image, "image")
-
     if (!image || !user || !todayData) return
 
     const ext = image.uri.substring(image.uri.lastIndexOf(".") + 1)
@@ -81,7 +79,7 @@ export default function EditDiary() {
     formData.append("file", file)
 
     try {
-      const { data, error } = await saveDiaryPicture({
+      const { error } = await saveDiaryPicture({
         diary_id: todayData?.id,
         formData,
         user_id: user.id,
@@ -94,11 +92,10 @@ export default function EditDiary() {
         return
       }
       successToast()
+      await mutate(["getToday", user.id])
       router.push("/today")
-
-      console.log(data, "data")
     } catch (error) {
-      console.log(error, "error")
+      console.error(error, "error")
     }
 
     return

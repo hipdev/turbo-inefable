@@ -46,7 +46,7 @@ export default function Login() {
 
     const redirectURL = Linking.createURL("/")
 
-    console.log(redirectURL, "url")
+    // console.log(redirectURL, "url")
 
     const result = await supabase.auth.signInWithOtp({
       email: email.trim(),

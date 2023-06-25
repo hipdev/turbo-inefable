@@ -26,7 +26,6 @@ export async function getDiaries([_key, user_id]: [string, string]) {
 }
 
 export function getDiaryPicture([_key, picture_path]: [string, string]) {
-  console.log(picture_path, "picture_path")
   const { data } = supabase.storage
     .from("cdn-inefable")
     .getPublicUrl(picture_path)
@@ -109,25 +108,50 @@ export async function saveDiaryPicture({
   diary_id: string
 }) {
   try {
+    // First check if there is a picture already
+    const { data: checkPicture, error: errorCheck } = await supabase
+      .from("diaries")
+      .select("picture_id")
+      .eq("id", diary_id)
+      .single()
+
+    if (errorCheck) {
+      return { error: errorCheck }
+    }
+
+    // If there is a picture, we delete it
+    if (checkPicture?.picture_id) {
+      const { data, error } = await supabase.storage
+        .from("cdn-inefable")
+        .remove([`${checkPicture.picture_id}`])
+
+      if (error) {
+        return { error }
+      }
+    }
+
+    const picturePath = `${user_id}/${diary_id}-${new Date().getTime()}`
+
+    // Then we upload the new picture
     const { data, error } = await supabase.storage
       .from("cdn-inefable")
-      .upload(`${user_id}/${diary_id}`, formData, { upsert: true })
+      .upload(picturePath, formData, { upsert: true })
 
     if (error) {
       return { error }
     }
 
-    // Flag the picture in the diary
-    const { error: errorUpdate } = await supabase
+    // Save the picture id in the diary
+    const { data: dataPicture, error: errorUpdate } = await supabase
       .from("diaries")
-      .update({ has_picture: true })
+      .update({ picture_id: data.path })
       .eq("id", diary_id)
 
     if (errorUpdate) {
       return { error }
     }
 
-    return { data }
+    return { data: dataPicture }
   } catch (error) {
     return { error }
   }

@@ -20,8 +20,6 @@ export default function HomeScreen() {
     getUserProfile,
   )
 
-  console.log(userProfile, "userProfile")
-
   return (
     <SafeAreaView className="mt-4 flex-1">
       <ScrollView className="mt-10">

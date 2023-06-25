@@ -39,7 +39,7 @@ export default function Diaries({ diaries }: { diaries: Diary[] }) {
         }
       } catch (error) {
         // Error retrieving data
-        console.log("Error retrieving data:", error)
+        console.error("Error retrieving data:", error)
       }
     }
 

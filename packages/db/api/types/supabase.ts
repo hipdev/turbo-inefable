@@ -45,8 +45,8 @@ export interface Database {
           created_at: string | null
           date: string
           diary: string | null
-          has_picture: boolean | null
           id: string
+          picture_id: string | null
           title: string | null
           updated_at: string | null
           user_id: string
@@ -56,8 +56,8 @@ export interface Database {
           created_at?: string | null
           date: string
           diary?: string | null
-          has_picture?: boolean | null
           id?: string
+          picture_id?: string | null
           title?: string | null
           updated_at?: string | null
           user_id: string
@@ -67,8 +67,8 @@ export interface Database {
           created_at?: string | null
           date?: string
           diary?: string | null
-          has_picture?: boolean | null
           id?: string
+          picture_id?: string | null
           title?: string | null
           updated_at?: string | null
           user_id?: string
