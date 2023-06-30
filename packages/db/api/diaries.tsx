@@ -18,7 +18,7 @@ export async function getToday([_key, user_id]: [string, string]) {
 export async function getDiaries([_key, user_id]: [string, string]) {
   const { data } = await supabase
     .from("diaries")
-    .select("date, created_at, diary, id, title")
+    .select("date, created_at, diary, id, title, picture_id")
     .eq("user_id", user_id)
     .order("date", { ascending: false })
 

@@ -17,12 +17,7 @@ import { Camera, Pencil } from "lucide-react-native"
 import { Controller, useForm } from "react-hook-form"
 import useSWR, { useSWRConfig } from "swr"
 
-import {
-  createDiary,
-  getDiaryPicture,
-  getToday,
-  updateDiary,
-} from "@inefable/api"
+import { createDiary, getToday, updateDiary } from "@inefable/api"
 
 import { useAuthStore } from "~/components/stores/auth"
 import { BUCKET_URL, successToast } from "~/lib/utils"
@@ -81,6 +76,8 @@ export default function TodayScreen() {
       await mutate(["getStories", user?.id])
     }
   }, 1500)
+
+  console.log(`${BUCKET_URL}/${todayData?.picture_id}`, "today")
 
   return (
     <>

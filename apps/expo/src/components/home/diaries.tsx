@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { Text, TouchableOpacity, View } from "react-native"
+import { Image, Text, TouchableOpacity, View } from "react-native"
 import { useRouter } from "expo-router"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import clsx from "clsx"
@@ -8,6 +8,7 @@ import useSWR from "swr"
 
 import { getUserCode, type Diary } from "@inefable/api"
 
+import { BUCKET_URL } from "~/lib/utils"
 import { useAuthStore } from "../../components/stores/auth"
 import SecurityCode from "../common/security-code"
 
@@ -56,6 +57,7 @@ export default function Diaries({ diaries }: { diaries: Diary[] }) {
       {(isAllowed || codeData?.data?.length == 0) &&
         diaries?.map((diary, index: number) => (
           <TouchableOpacity
+            activeOpacity={1}
             onPress={() => {
               if (isToday(parseISO(diary.date))) {
                 router.push("/today")
@@ -63,12 +65,32 @@ export default function Diaries({ diaries }: { diaries: Diary[] }) {
             }}
             key={diary.id}
             className={clsx(
-              "flex h-40  w-1/2 flex-row items-center justify-center pb-px",
+              "relative flex  h-40 w-1/2 flex-row items-center justify-center pb-px",
               index % 2 == 0 && "pr-px",
             )}
           >
-            <View className="h-full w-full items-center justify-center bg-zinc-800">
-              <Text className="text-lg font-bold text-white">{diary.date}</Text>
+            {diary?.picture_id ? (
+              <>
+                <View className="absolute z-10 h-full w-full flex-1">
+                  <Image
+                    source={{
+                      uri: `${BUCKET_URL}/${diary?.picture_id}`,
+                    }}
+                    className="flex-1 object-cover"
+                    alt="Foto del diario"
+                  />
+                </View>
+              </>
+            ) : null}
+            <View
+              className={clsx(
+                "relative z-20 h-full w-full items-center justify-end",
+                diary?.picture_id ? "" : "bg-zinc-800",
+              )}
+            >
+              <Text className="w-full bg-black/25 text-center text-lg  font-bold text-white">
+                {diary.date}
+              </Text>
             </View>
           </TouchableOpacity>
         ))}
