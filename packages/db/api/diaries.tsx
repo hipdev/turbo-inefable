@@ -15,6 +15,16 @@ export async function getToday([_key, user_id]: [string, string]) {
   return data
 }
 
+export async function getDiary([_key, diary_id]: [string, string]) {
+  const { data } = await supabase
+    .from("diaries")
+    .select("*")
+    .eq("id", diary_id)
+    .single()
+
+  return data
+}
+
 export async function getDiaries([_key, user_id]: [string, string]) {
   const { data } = await supabase
     .from("diaries")

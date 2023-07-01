@@ -62,6 +62,8 @@ export default function Diaries({ diaries }: { diaries: Diary[] }) {
               if (isToday(parseISO(diary.date))) {
                 router.push("/today")
               }
+
+              router.push(`/diary/${diary.id}`)
             }}
             key={diary.id}
             className={clsx(
