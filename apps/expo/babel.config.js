@@ -32,6 +32,7 @@ module.exports = function (api) {
       "expo-router/babel",
       ["module:react-native-dotenv"],
       ["module-resolver", { alias: { "~": "./src" } }],
+      "react-native-reanimated/plugin",
     ],
   }
 }

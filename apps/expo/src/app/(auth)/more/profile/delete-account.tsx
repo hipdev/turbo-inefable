@@ -6,8 +6,7 @@ import {
   View,
 } from "react-native"
 import { TextInput } from "react-native-gesture-handler"
-import * as Progress from "react-native-progress"
-import { Stack, useRouter } from "expo-router"
+import { Stack } from "expo-router"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import clsx from "clsx"
 import { Trash } from "lucide-react-native"
@@ -17,6 +16,7 @@ import useSWR from "swr"
 import { getUserCode } from "@inefable/api"
 
 import GoBack from "~/components/common/go-back"
+import LoadingSpinner from "~/components/common/loading-spinner"
 import { type ValidateCodeResponse } from "~/components/common/security-code"
 import { useAuthStore } from "~/components/stores/auth"
 import supabase from "~/lib/supabase"
@@ -133,7 +133,7 @@ export default function DeleteCode() {
               />
             </View>
             {isSubmitting ? (
-              <Progress.Circle size={28} indeterminate={true} color="#AC66CC" />
+              <LoadingSpinner />
             ) : (
               <TouchableOpacity disabled={isSubmitting} onPress={handleDelete}>
                 <View className="flex-row items-center space-x-2 rounded-md border-2 border-red-500 px-2 py-1">

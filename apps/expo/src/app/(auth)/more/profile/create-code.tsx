@@ -6,12 +6,12 @@ import {
   View,
 } from "react-native"
 import { TextInput } from "react-native-gesture-handler"
-import * as Progress from "react-native-progress"
 import { useRouter } from "expo-router"
 import { Save } from "lucide-react-native"
 import { Controller, useForm } from "react-hook-form"
 import { useSWRConfig } from "swr"
 
+import LoadingSpinner from "~/components/common/loading-spinner"
 import { type ValidateCodeResponse } from "~/components/common/security-code"
 import { useAuthStore } from "~/components/stores/auth"
 import { SITE_URL } from "~/lib/utils"
@@ -80,7 +80,7 @@ export default function CreateCode() {
               />
             </View>
             {isSubmitting ? (
-              <Progress.Circle size={28} indeterminate={true} color="#AC66CC" />
+              <LoadingSpinner />
             ) : (
               <TouchableOpacity disabled={isSubmitting} onPress={handleCode}>
                 <View className="flex-row items-center space-x-2 rounded-md border-2 border-primary px-2 py-1">

@@ -1,12 +1,13 @@
 import { SafeAreaView, Text, TextInput, View } from "react-native"
 import { TouchableOpacity } from "react-native-gesture-handler"
-import * as Progress from "react-native-progress"
 import { Link } from "expo-router"
-import { getUserCode, updateUserName } from "@inefable/api"
 import { Save } from "lucide-react-native"
 import { Controller, useForm } from "react-hook-form"
 import useSWR from "swr"
 
+import { getUserCode, updateUserName } from "@inefable/api"
+
+import LoadingSpinner from "~/components/common/loading-spinner"
 import { useAuthStore } from "~/components/stores/auth"
 import { errorToast, successToast } from "~/lib/utils"
 
@@ -91,11 +92,7 @@ export default function Profile() {
 
             <View className="mt-8">
               {isSubmitting ? (
-                <Progress.Circle
-                  size={28}
-                  indeterminate={true}
-                  color="#AC66CC"
-                />
+                <LoadingSpinner />
               ) : (
                 <TouchableOpacity disabled={isSubmitting} onPress={handleName}>
                   <View className="flex-row items-center justify-center rounded-sm bg-primary py-2">

@@ -1,5 +1,4 @@
 import { Text, TextInput, TouchableOpacity, View } from "react-native"
-import * as Progress from "react-native-progress"
 import { Send } from "lucide-react-native"
 import { Controller, useForm } from "react-hook-form"
 import { useSWRConfig } from "swr"
@@ -7,6 +6,7 @@ import { useSWRConfig } from "swr"
 import { updateUserName } from "@inefable/api"
 
 import { useAuthStore } from "../../components/stores/auth"
+import LoadingSpinner from "../common/loading-spinner"
 
 export default function AddName() {
   const { user } = useAuthStore()
@@ -56,7 +56,7 @@ export default function AddName() {
           />
         </View>
         {isSubmitting ? (
-          <Progress.Circle size={28} indeterminate={true} color="#AC66CC" />
+          <LoadingSpinner />
         ) : (
           <TouchableOpacity disabled={isSubmitting} onPress={handleName}>
             <Send size={28} color="#444" />
