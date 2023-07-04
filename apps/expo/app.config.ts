@@ -28,10 +28,15 @@ const defineConfig = (): ExpoConfig => ({
       foregroundImage: "./assets/icon.png",
       backgroundColor: "#1F104A",
     },
+    package: "com.julianux.turbo-inefable",
+    permissions: [
+      "android.permission.CAMERA",
+      "android.permission.RECORD_AUDIO",
+    ],
   },
   extra: {
     eas: {
-      // projectId: "your-project-id",
+      projectId: "a5de1fb0-263d-422a-8669-01e159ba75be",
     },
     supabaseUrl: "https://wvwiljxejnwmtlrvqlcw.supabase.co",
     supabasePublicKey:
@@ -39,14 +44,6 @@ const defineConfig = (): ExpoConfig => ({
   },
   plugins: [
     "./expo-plugins/with-modify-gradle.js",
-    [
-      "expo-media-library",
-      {
-        photosPermission: "Allow Inefable to access your photos.",
-        savePhotosPermission: "Allow Inefable to save photos.",
-        isAccessMediaLocationEnabled: true,
-      },
-    ],
     [
       "expo-camera",
       {
